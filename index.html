@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#7a4b1e"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Feed My Sheep"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" href="icon.svg" type="image/svg+xml"><title>Feed My Sheep – Sermons & Ministry Planner</title>
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#7a4b1e"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Feed My Sheep"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" href="icon.svg" type="image/svg+xml"><script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js" defer></script><title>Feed My Sheep – Sermons & Ministry Planner</title>
 <style>
 :root{--bg:#faf6ee;--card:#fff;--ink:#2b2418;--mute:#7a6f5d;--acc:#7a4b1e;--acc2:#e8d9bf;--ok:#2f7d4f;--line:#e5dcc8;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17130e;--card:#221c14;--ink:#f1e9da;--mute:#a89b84;--acc:#e0a96a;--acc2:#3a2f20;--ok:#6fd39a;--line:#3a3023;color-scheme:dark}}
@@ -31,7 +31,7 @@ button.sec{background:var(--acc2);color:var(--ink)}button.sm{padding:5px 10px;fo
 .modal{position:fixed;inset:0;background:#0007;display:none;align-items:flex-end;justify-content:center;z-index:5}
 .modal.show{display:flex}.sheet{background:var(--bg);width:100%;max-width:720px;max-height:92%;overflow:auto;border-radius:18px 18px 0 0;padding:16px}
 label{display:block;font-size:13px;color:var(--mute);margin:10px 0 3px}
-.tabs{overflow-x:auto}.tabs button{flex:none;padding:10px 13px;white-space:nowrap}details.card summary{cursor:pointer;font-weight:bold;font-size:17px}details ul{margin:8px 0 8px 18px;padding:0}details li{margin-bottom:4px}.opt{display:block;width:100%;text-align:left;margin:8px 0;background:var(--card);color:var(--ink);border:1px solid var(--line);padding:12px 14px;font-size:16px}.opt.sel{background:var(--acc);color:var(--bg)}.track{height:8px;background:var(--acc2);border-radius:9px;overflow:hidden}.fill{height:100%;background:var(--acc)}.due{color:#c0392b;font-weight:bold}
+.tabs{overflow-x:auto}.tabs button{flex:none;padding:10px 13px;white-space:nowrap}details.card summary{cursor:pointer;font-weight:bold;font-size:17px}details ul{margin:8px 0 8px 18px;padding:0}details li{margin-bottom:4px}.opt{display:block;width:100%;text-align:left;margin:8px 0;background:var(--card);color:var(--ink);border:1px solid var(--line);padding:12px 14px;font-size:16px}.opt.sel{background:var(--acc);color:var(--bg)}.track{height:8px;background:var(--acc2);border-radius:9px;overflow:hidden}.fill{height:100%;background:var(--acc)}input[type=checkbox]{width:auto;margin-right:8px}.big{font-size:19px;padding:16px;width:100%;margin-top:8px}.hl{background:var(--acc);color:var(--bg)}.due{color:#c0392b;font-weight:bold}
 </style></head><body>
 <header>
 <div class="row"><div style="flex:1"><h1>🐑 Feed My Sheep</h1><div class="verse">“Feed my sheep.” — John 21:17</div></div>
@@ -53,7 +53,7 @@ const SS=["Idea","Preparing","Ready","Preached"],MS=["Planned","In progress","Do
 let S={sermons:[],acts:[],special:[]};
 try{const r=localStorage.getItem("fms");if(r)S=JSON.parse(r)}catch(e){}
 S.special=S.special||[];S.people=S.people||[];S.cfg=S.cfg||{church:"",cc:"234"};
-const H=s=>{s="fms|"+s;let h1=0xdeadbeef,h2=0x41c6ce57;for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return(4294967296*(2097151&h2)+(h1>>>0)).toString(36)};const DEFH="23sm57esvp2";function norm(){S.chal=S.chal||{secs:20,jh:DEFH,ah:""};S.results=S.results||[];S.used=S.used||{};S.custom=S.custom||[]}norm();
+const H=s=>{s="fms|"+s;let h1=0xdeadbeef,h2=0x41c6ce57;for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return(4294967296*(2097151&h2)+(h1>>>0)).toString(36)};const DEFH="23sm57esvp2";function norm(){S.chal=S.chal||{secs:20,jh:DEFH,ah:""};S.results=S.results||[];S.used=S.used||{};S.custom=S.custom||[];S.sponsors=S.sponsors||[];S.chal.partner=S.chal.partner||"FSCS"}norm();
 const arr=()=>tab=="sermons"?S.sermons:tab=="acts"?S.acts:S.special;
 const save=()=>{try{localStorage.setItem("fms",JSON.stringify(S))}catch(e){}};
 const now=new Date();let year=now.getFullYear(),month=now.getMonth(),tab="sermons";
@@ -65,7 +65,7 @@ function head(){
 $("yr").innerHTML=[year-1,year,year+1,year+2].map(y=>`<option ${y==year?"selected":""}>${y}</option>`).join("");
 $("months").innerHTML=M.map((m,i)=>`<button class="${tab!="year"&&i==month?"on":""}" onclick="month=${i};tab=tab=='year'?'sermons':tab;render()">${m.slice(0,3)}</button>`).join("");
 $("tabs").innerHTML=[["sermons","Sermons"],["acts","Ministry"],["special","Special"],["people","People"],["counsel","Counsel"],["care","Care"],["comm","Connect"],["chal","Challenge"],["year","Year"]].map(([k,v])=>`<button class="${tab==k?"on":""}" onclick="tab='${k}';render()">${v}</button>`).join("");
-$("add").style.display=["sermons","acts","special","people"].includes(tab)?"":"none";$("q").style.display=["comm","year","chal"].includes(tab)?"none":"";$("months").style.display=["sermons","acts","special"].includes(tab)?"":"none";$("spc").style.display=tab=="special"?"":"none";$("ideas").innerHTML=tab=="special"?ideasHTML():""}
+{const a=document.querySelector&&document.querySelector(".tabs .on");if(a&&a.scrollIntoView)a.scrollIntoView({inline:"center",block:"nearest"})}$("add").style.display=["sermons","acts","special","people"].includes(tab)?"":"none";$("q").style.display=["comm","year","chal"].includes(tab)?"none":"";$("months").style.display=["sermons","acts","special"].includes(tab)?"":"none";$("spc").style.display=tab=="special"?"":"none";$("ideas").innerHTML=tab=="special"?ideasHTML():""}
 function inMonth(x){return yOf(x.date)==year&&mOf(x.date)==month}
 function match(x){const q=$("q").value.toLowerCase();return !q||JSON.stringify(x).toLowerCase().includes(q)}
 function render(){if(S.run&&!S.run.done)tab="chal";head();const L=$("list");if(["people","counsel","care","comm","chal"].includes(tab))return renderNew(L);
@@ -256,10 +256,10 @@ return sh(out)}
 let cv="gate",isAdmin=false,TI=null,lock=false;
 function cpy(t){try{navigator.clipboard.writeText(t)}catch(e){}const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy")}catch(e){}a.remove();alert("Copied.")}
 function rChal(L){const r=S.run;if(r&&!r.done)return showQ(L);if(r&&r.done)return showRes(L);
-if(cv=="admin"&&isAdmin)return rAdmin(L);
+if(cv=="host"&&isAdmin)return rHost(L);if(cv=="lobby")return rLobby(L);if(cv=="admin"&&isAdmin)return rAdmin(L);
 if(cv=="name"){L.innerHTML=`<div class="card"><h2 style="margin:0;color:var(--acc)">Ready?</h2><ul><li>50 mixed questions</li><li>${S.chal.secs} seconds per question</li><li>Once you choose an answer you cannot go back</li><li>Results appear automatically at the end</li></ul><label>Your name</label><input id="cn" placeholder="Full name"><button style="margin-top:12px;width:100%" onclick="begin()">▶ Start</button></div>`;return}
 if(cv=="alogin"||cv=="asetup"){const s=cv=="asetup";L.innerHTML=`<div class="card"><h3>🛡️ Admin ${s?"setup":"login"}</h3><div class="meta">${s?"Create an admin PIN (at least 4 characters). Keep it private.":"Enter the admin PIN."}</div><label>PIN</label><input id="ap1" type="password">${s?`<label>Repeat PIN</label><input id="ap2" type="password">`:""}<div class="row" style="margin-top:12px"><button class="sec" style="flex:1" onclick="cv='gate';render()">Back</button><button style="flex:1" onclick="${s?"admSetup()":"admLogin()"}">${s?"Create":"Enter"}</button></div></div>`;return}
-L.innerHTML=`<div class="card"><h2 style="margin:0;color:var(--acc)">🏆 Feed My Sheep Challenge</h2><div class="meta" style="margin:6px 0 10px">50 questions on Bible, academics, investigations, morals &amp; ethics, security, safety and ICT. Get the challenge code from the admin.</div><label>Challenge code</label><input id="jc" type="tel" inputmode="numeric" placeholder="Enter code"><button style="margin-top:10px;width:100%" onclick="joinC()">Join</button></div><div style="text-align:center"><button class="sec sm" onclick="admGo()">Admin</button></div>`}
+L.innerHTML=`<div class="card"><h2 style="margin:0;color:var(--acc)">🏆 Feed My Sheep Challenge</h2><div class="meta" style="margin:6px 0 10px">50 questions on Bible, academics, investigations, morals &amp; ethics, security, safety and ICT. Get the challenge code from the host.</div><label>Challenge code</label><input id="jc" type="tel" inputmode="numeric" placeholder="Enter code"><label>Your name</label><input id="cn" placeholder="Full name"><button class="big" onclick="joinLive()">Join live challenge</button><button class="sec" style="width:100%;margin-top:8px" onclick="joinSolo()">Play alone (offline)</button><button class="sec sm" style="margin-top:8px" onclick="sayHow()">🔊 How to play</button></div><div style="text-align:center"><button class="sm" onclick="admGo()">🛡️ Host / Admin</button></div>`}
 function joinC(){if(H("j"+$("jc").value.trim())==S.chal.jh){cv="name";render()}else alert("Wrong code. Ask the admin for the correct challenge code.")}
 function admGo(){cv=isAdmin?"admin":S.chal.ah?"alogin":"asetup";render()}
 function admLogin(){if(H("a"+$("ap1").value)==S.chal.ah){isAdmin=true;cv="admin";render()}else alert("Wrong PIN.")}
@@ -271,27 +271,109 @@ clearInterval(TI);TI=setInterval(tick,200);tick()}
 function tick(){const r=S.run;if(!r||r.done||!$("tb")){clearInterval(TI);return}const rem=r.secs-(Date.now()-r.q0)/1000;if(rem<=0){pick(-1);return}$("tb").style.width=(100*rem/r.secs)+"%";$("tt").textContent="⏱ "+Math.ceil(rem)+" s"}
 function pick(k){const r=S.run;if(lock||!r||r.done)return;lock=true;clearInterval(TI);
 if(k>=0){const b=document.querySelectorAll(".opt")[k];if(b)b.classList.add("sel")}
-setTimeout(()=>{r.ans.push(k);if(k==r.qs[r.i].a)r.score++;r.i++;if(r.i>=r.qs.length)fin(r);else r.q0=Date.now();save();lock=false;render()},k>=0?250:0)}
+setTimeout(()=>{r.ans.push(k);if(k==r.qs[r.i].a)r.score++;r.i++;if(r.i>=r.qs.length)fin(r);else r.q0=Date.now();if(r.live)sendHost(r.done?{t:"done",s:r.score,sec:Math.round((r.end-r.t0)/1000)}:{t:"prog",i:r.i,s:r.score});save();lock=false;render()},k>=0?250:0)}
 function fin(r){r.done=true;r.end=Date.now();S.results.push({name:r.name,score:r.score,n:r.qs.length,sec:Math.round((r.end-r.t0)/1000),at:new Date().toISOString().slice(0,16).replace("T"," ")})}
 const TT=s=>s>=45?"Master Shepherd 🏆":s>=38?"Faithful Servant ⭐":s>=30?"Good Steward 👏":s>=20?"Growing Disciple 🌱":"Keep Learning 📚";
 function showRes(L){const r=S.run,n=r.qs.length,pc=Math.round(100*r.score/n),bc={};
 r.qs.forEach((q,i)=>{const b=bc[q.c]=bc[q.c]||[0,0];b[1]++;if(r.ans[i]==q.a)b[0]++});
 const miss=r.qs.map((q,i)=>r.ans[i]==q.a?"":`<div style="border-top:1px solid var(--line);padding:8px 0"><div style="font-size:15px">${i+1}. ${esc(q.q)}</div><div class="meta">Your answer: ${r.ans[i]<0?"no answer (time up)":esc(q.o[r.ans[i]])}<br>Correct: <b class="ok">${esc(q.o[q.a])}</b></div></div>`).join("");
-L.innerHTML=`<div class="card" style="text-align:center"><div style="font-size:42px">🏆</div><h2 style="margin:4px 0">${esc(r.name)}</h2><div style="font-size:40px;color:var(--acc);font-weight:bold">${r.score} / ${n}</div><div class="meta">${pc}% · ${TT(r.score)} · ${Math.round((r.end-r.t0)/1000)} s</div></div><div class="card"><h3>By subject</h3>${Object.keys(bc).map(c=>`<div class="meta">${CATS[c][1]} ${CATS[c][0]}: <b>${bc[c][0]}/${bc[c][1]}</b></div>`).join("")}</div><div class="card"><h3>Review</h3>${miss||"Perfect score! Nothing missed. 🎉"}</div><div class="row" style="flex-wrap:wrap"><button onclick="cpRes()">Copy my result</button><button class="sec" onclick="again()">Finish</button></div>`}
+L.innerHTML=`<div class="card" style="text-align:center"><div style="font-size:42px">🏆</div><h2 style="margin:4px 0">${esc(r.name)}</h2><div style="font-size:40px;color:var(--acc);font-weight:bold">${r.score} / ${n}</div><div class="meta">${pc}% · ${TT(r.score)} · ${Math.round((r.end-r.t0)/1000)} s</div></div>${boardHTML(r)}<div class="card"><h3>By subject</h3>${Object.keys(bc).map(c=>`<div class="meta">${CATS[c][1]} ${CATS[c][0]}: <b>${bc[c][0]}/${bc[c][1]}</b></div>`).join("")}</div><div class="card"><h3>Review</h3>${miss||"Perfect score! Nothing missed. 🎉"}</div><div class="row" style="flex-wrap:wrap"><button onclick="cpRes()">Copy my result</button><button class="sec" onclick="again()">Finish</button></div>`}
 function cpRes(){const r=S.run;cpy(r.name+" – "+r.score+"/"+r.qs.length+" ("+Math.round(100*r.score/r.qs.length)+"%) – "+TT(r.score)+" – Feed My Sheep Challenge")}
-function again(){S.run=null;cv="gate";save();render()}
+function again(){S.run=null;cv=P.conn&&P.conn.open?"lobby":"gate";save();render()}
 function rAdmin(L){const R=S.results.slice().sort((a,b)=>b.score-a.score||a.sec-b.sec),link=location.href.split("#")[0]+"#ch"+S.chal.secs;
 const left=Object.keys(CATS).map(c=>{const b=bankOf(c);return CATS[c][1]+" "+CATS[c][0]+": "+b.filter(s=>!S.used[kOf(s)]).length+" unused of "+b.length+(GEN[c]?" (+ endless generated)":"")}).join("<br>");
 L.innerHTML=`<div class="card"><h3>🛡️ Admin panel</h3><div class="row" style="flex-wrap:wrap"><button class="sec sm" onclick="cv='gate';render()">Participant screen</button><button class="sec sm" onclick="isAdmin=false;cv='gate';render()">Lock admin</button></div></div>
+<div class="card"><h3>🎙️ Host the challenge</h3><div class="meta">Challenge code: <b>${curCode()}</b>. Open the lobby, let players join, then press Start.</div><button class="big" onclick="openHost()">🎙️ Open live lobby</button></div>
+<div class="card"><h3>🤝 Sponsors</h3><label>In conjunction with</label><input id="sp_p" value="${esc(S.chal.partner)}"><label>Sponsor names (one per line)</label><textarea id="sp_l" rows="5">${esc(S.sponsors.join("\n"))}</textarea><div class="row" style="margin-top:8px;flex-wrap:wrap"><button class="sm" onclick="saveSpons()">Save sponsors</button><button class="sec sm" onclick="announceSponsors()">🔊 Hear announcement</button><button class="sec sm" onclick="sayHow()">🔊 Hear how to play</button></div></div>
 <div class="card"><h3>⏱ Time per question</h3><label>Seconds (5 to 300)</label><input id="as" type="number" min="5" max="300" value="${S.chal.secs}"><button class="sm" style="margin-top:8px" onclick="saveSecs()">Save</button><label>Participant link (carries your time setting)</label><input readonly value="${esc(link)}" onclick="this.select()"><button class="sec sm" style="margin-top:8px" onclick="cpy(this.previousElementSibling.value)">Copy link</button></div>
-<div class="card"><h3>🔑 Codes &amp; admin access</h3><label>New challenge code</label><input id="nc" type="tel" placeholder="New code"><button class="sm" style="margin-top:8px" onclick="setCode()">Change code</button><label>New admin PIN</label><input id="np" type="password" placeholder="New PIN"><button class="sm" style="margin-top:8px" onclick="setPin()">Change PIN</button><div class="meta" style="margin-top:8px">To give someone admin rights, share your admin PIN with them. Change the PIN to take it back.</div></div>
+<div class="card"><h3>🔑 Codes &amp; admin access</h3><div class="meta">Current code: <b>${curCode()}</b></div><label>New challenge code</label><input id="nc" type="tel" placeholder="New code"><button class="sm" style="margin-top:8px" onclick="setCode()">Change code</button><label>New admin PIN</label><input id="np" type="password" placeholder="New PIN"><button class="sm" style="margin-top:8px" onclick="setPin()">Change PIN</button><div class="meta" style="margin-top:8px">To give someone admin rights, share your admin PIN with them. Change the PIN to take it back.</div></div>
 <div class="card"><h3>📚 Question bank</h3><div class="meta">${left}</div><button class="sec sm" style="margin-top:8px" onclick="S.used={};save();alert('Done. All questions are fresh again.')">Reset used-question memory</button></div>
 <div class="card"><h3>➕ Add your own question</h3><label>Subject</label><select id="nq_c">${Object.keys(CATS).map(c=>`<option value="${c}">${CATS[c][0]}</option>`).join("")}</select><label>Question</label><textarea id="nq_q" rows="2"></textarea><label>Correct answer</label><input id="nq_a"><label>Wrong answer 1</label><input id="nq_w0"><label>Wrong answer 2</label><input id="nq_w1"><label>Wrong answer 3</label><input id="nq_w2"><button class="sm" style="margin-top:8px" onclick="addQ()">Add question</button></div>
 <div class="card"><h3>📊 Results on this device</h3>${R.length?R.map((x,i)=>`<div class="meta">${i+1}. <b>${esc(x.name)}</b> — ${x.score}/${x.n} · ${x.sec}s · ${x.at}</div>`).join(""):`<div class="meta">No results yet.</div>`}<div class="row" style="margin-top:8px"><button class="sec sm" onclick="cpy(S.results.slice().sort((a,b)=>b.score-a.score||a.sec-b.sec).map((x,i)=>(i+1)+'. '+x.name+' - '+x.score+'/'+x.n+' - '+x.sec+'s').join(String.fromCharCode(10)))">Copy list</button><button class="sec sm" onclick="if(confirm('Clear all results?')){S.results=[];save();render()}">Clear</button></div></div>`}
 function saveSecs(){const v=Math.min(300,Math.max(5,+$("as").value||20));S.chal.secs=v;save();render();alert("Saved: "+v+" seconds per question.")}
-function setCode(){const v=$("nc").value.trim();if(v.length<4){alert("Use at least 4 characters.");return}S.chal.jh=H("j"+v);save();$("nc").value="";alert("Challenge code changed.")}
+function setCode(){const v=$("nc").value.trim();if(v.length<4){alert("Use at least 4 characters.");return}S.chal.jh=H("j"+v);S.chal.code=v;save();$("nc").value="";alert("Challenge code changed.")}
 function setPin(){const v=$("np").value;if(v.length<4){alert("Use at least 4 characters.");return}S.chal.ah=H("a"+v);save();$("np").value="";alert("Admin PIN changed.")}
 function addQ(){const g=k=>$("nq_"+k).value.replace(/[|]/g," ").trim(),q=g("q"),a=g("a"),w=[g("w0"),g("w1"),g("w2")];if(!q||!a||w.some(x=>!x)){alert("Fill in the question and all four answers.");return}S.custom.push({c:$("nq_c").value,q,a,w});save();render();alert("Question added.")}
+
+const SY=typeof speechSynthesis!="undefined"?speechSynthesis:null;let VOICE=true,HOST=null;
+let P={conn:null,peer:null,roster:[],cap:"",board:[],spons:null,late:false,name:"",code:""};
+const curCode=()=>S.chal.code||"201301";
+const spell=t=>/^[A-Z]{2,6}$/.test(t)?t.split("").join(" "):t;
+function unlockVoice(){try{if(SY)SY.speak(new SpeechSynthesisUtterance(""))}catch(e){}}
+function speak(t){return new Promise(res=>{if(!SY||!VOICE){setTimeout(res,Math.min(3500,500+t.length*40));return}let d=false;const f=()=>{if(!d){d=true;res()}};try{const u=new SpeechSynthesisUtterance(t);u.rate=.95;u.lang="en";u.onend=f;u.onerror=f;setTimeout(f,Math.max(3000,t.length*130));SY.speak(u)}catch(e){f()}})}
+const up=()=>{if(cv=="host"&&HOST&&tab=="chal")render()};
+function bc(m){if(!HOST)return;Object.values(HOST.players).forEach(p=>{try{if(p.conn&&p.conn.open)p.conn.send(m)}catch(e){}})}
+function say(t,spk){if(HOST){HOST.cap=t;if(HOST.opts.vo)bc({t:"say",text:spk||t});up()}return speak(spk||t)}
+const howTo=()=>"Welcome to the Feed My Sheep Challenge. You will answer fifty questions on the Bible, academics, investigations, morals and ethics, security, safety and I C T. Each question gives you "+S.chal.secs+" seconds. Choose one answer. Once you choose, you cannot go back. If time runs out, the question is marked wrong. Your results will appear automatically at the end. Play honestly, and may God bless you.";
+function sayHow(){unlockVoice();if(HOST&&cv=="host")say(howTo());else speak(howTo())}
+async function announceSponsors(){unlockVoice();const sp=S.sponsors;if(!sp.length){alert("Add sponsor names first.");return}if(HOST&&HOST.b2)return;if(HOST)HOST.b2=true;
+await say("In conjunction with "+S.chal.partner+", this challenge is proudly sponsored by:","This challenge is held in conjunction with "+spell(S.chal.partner)+", and is proudly sponsored by:");
+for(let i=0;i<sp.length;i++){if(HOST){HOST.hl=i;up()}await say(sp[i])}
+if(HOST)HOST.hl=-1;await say("Thank you to all our sponsors for your generous support.");if(HOST){HOST.b2=false;up()}}
+function saveSpons(){S.chal.partner=$("sp_p").value.trim()||"FSCS";S.sponsors=$("sp_l").value.split("\n").map(x=>x.trim()).filter(Boolean);save();alert("Sponsors saved.")}
+function openHost(){if(typeof Peer=="undefined"){alert("Live hosting needs the internet. Connect and reload the app.");return}
+if(HOST&&HOST.peer&&!HOST.peer.destroyed){cv="host";render();return}
+HOST={status:"Connecting…",players:{},started:false,qs:[],opts:{sp:true,vo:true},hl:-1,busy:false,b2:false,cap:"",round:0};
+const pr=new Peer("fmsc-"+S.chal.jh);HOST.peer=pr;
+pr.on("open",()=>{HOST.status="🟢 Lobby open";up()});
+pr.on("error",e=>{HOST.status="⚠️ "+(e.type=="unavailable-id"?"This code is already being hosted. Close other hosts, wait a minute and try again.":e.type);up()});
+pr.on("connection",c=>{c.on("data",m=>hostMsg(c,m));c.on("close",()=>{const p=HOST&&HOST.players[c.__n];if(p&&p.conn===c){p.on=false;roster();up()}})});
+cv="host";render()}
+function roster(){bc({t:"roster",n:Object.keys(HOST.players).filter(k=>HOST.players[k].on)})}
+function board(){const rows=Object.keys(HOST.players).map(n=>Object.assign({n},HOST.players[n])).filter(p=>p.in).sort((a,b)=>b.s-a.s||a.sec-b.sec).map(p=>({n:p.n,s:p.s,d:p.done}));bc({t:"board",rows})}
+function hostMsg(c,m){if(!HOST)return;
+if(m.t=="hello"){if(H("j"+String(m.code).trim())!=S.chal.jh){c.send({t:"no",why:"Wrong code."});setTimeout(()=>c.close(),400);return}
+let n=String(m.name||"Player").slice(0,30),ex=HOST.players[n];
+if(ex&&!m.rejoin){let k=2;while(HOST.players[n+" "+k])k++;n=n+" "+k;ex=null}
+const p=HOST.players[n]=ex||{s:0,i:0,done:false,sec:0,in:false};p.conn=c;p.on=true;c.__n=n;
+c.send({t:"ok",name:n,late:HOST.started&&!(ex&&ex.in)});c.send({t:"spons",partner:S.chal.partner,list:S.sponsors});roster();up()}
+else if(m.t=="prog"){const p=HOST.players[c.__n];if(p){p.i=m.i;p.s=m.s;up()}}
+else if(m.t=="done"){const p=HOST.players[c.__n];if(p){p.done=true;p.s=m.s;p.sec=m.sec;S.results.push({name:c.__n,score:m.s,n:HOST.qs.length,sec:m.sec,at:new Date().toISOString().slice(0,16).replace("T"," ")});save();board();up()}}}
+async function startComp(){if(!HOST||HOST.busy)return;if(!Object.values(HOST.players).some(p=>p.on)){alert("No players have joined yet.");return}
+HOST.busy=true;up();unlockVoice();
+if(HOST.opts.sp&&S.sponsors.length)await announceSponsors();
+for(const n of ["3","2","1"])await say(n);
+await say("Go!");
+HOST.qs=buildQuiz();HOST.started=true;HOST.round++;
+Object.values(HOST.players).forEach(p=>{p.in=!!p.on;p.s=0;p.i=0;p.done=false;p.sec=0});
+bc({t:"start",qs:HOST.qs,secs:S.chal.secs});save();HOST.busy=false;up()}
+function endRound(){if(!HOST)return;HOST.started=false;Object.values(HOST.players).forEach(p=>{p.in=false});bc({t:"lobby"});up()}
+function closeHost(){if(!confirm("Close the lobby? Players will be disconnected."))return;try{bc({t:"bye"});HOST.peer.destroy()}catch(e){}HOST=null;cv="admin";render()}
+function rHost(L){const h=HOST;if(!h){L.innerHTML=`<div class="card">Lobby closed.<br><button style="margin-top:8px" onclick="cv='admin';render()">Back to admin</button></div>`;return}
+const ps=Object.keys(h.players).map(n=>Object.assign({n},h.players[n])),on=ps.filter(p=>p.on);
+const rows=h.started?ps.filter(p=>p.in).sort((a,b)=>b.s-a.s||a.sec-b.sec).map((p,i)=>`<div class="meta">${i+1}. <b>${esc(p.n)}</b> — ${p.s} pts · Q${p.i}/${h.qs.length}${p.done?" ✅ finished":""}${p.on?"":" (offline)"}</div>`).join(""):on.map(p=>`<div class="meta">🟢 ${esc(p.n)}</div>`).join("");
+const sp=S.sponsors.map((x,i)=>`<span class="tag ${h.hl==i?"hl":""}">${esc(x)}</span>`).join("")||`<span class="meta">No sponsors yet. Add them in the admin panel.</span>`;
+L.innerHTML=`<div class="card"><h3>🎙️ Live host</h3><div class="meta">${esc(h.status)}</div><div style="text-align:center;margin:10px 0"><div class="meta">Players join with code</div><div style="font-size:38px;font-weight:bold;letter-spacing:6px;color:var(--acc)">${esc(curCode())}</div><div class="meta">Challenge tab → enter code and name → Join live challenge</div></div></div>
+${h.cap?`<div class="card" style="text-align:center;font-size:20px">🔊 ${esc(h.cap)}</div>`:""}
+<div class="card"><h3>👥 ${h.started?"Live scores":"Players joined ("+on.length+")"}</h3>${rows||`<div class="meta">Waiting for players to join…</div>`}</div>
+<div class="card"><h3>🤝 In conjunction with ${esc(S.chal.partner)}</h3>${sp}</div>
+<div class="card"><label><input type="checkbox" ${h.opts.sp?"checked":""} onchange="HOST.opts.sp=this.checked">Announce sponsors when I press Start</label><label><input type="checkbox" ${h.opts.vo?"checked":""} onchange="HOST.opts.vo=this.checked">Players’ phones also speak</label><label><input type="checkbox" ${VOICE?"checked":""} onchange="VOICE=this.checked">Voice on this device</label>
+<div class="row" style="margin-top:8px;flex-wrap:wrap"><button class="sec sm" onclick="sayHow()">🔊 How to play</button><button class="sec sm" onclick="announceSponsors()">🔊 Sponsors</button></div>
+${h.started?`<button class="big" onclick="endRound()">⏹ End round (back to lobby)</button>`:`<button class="big" ${h.busy?"disabled":""} onclick="startComp()">${h.busy?"Starting…":"▶ START COMPETITION"}</button>`}</div>
+<div class="row" style="flex-wrap:wrap"><button class="sec sm" onclick="cv='admin';render()">Back to admin</button><button class="sec sm" onclick="closeHost()">Close lobby</button></div>`}
+function sendHost(m){try{if(P.conn&&P.conn.open)P.conn.send(m)}catch(e){}}
+function joinSolo(){if(H("j"+$("jc").value.trim())!=S.chal.jh){alert("Wrong code. Ask the host for the correct challenge code.");return}begin()}
+function joinLive(re){const code=re?S.run.code:$("jc").value.trim(),name=re?S.run.name:$("cn").value.trim();
+if(!code||!name){alert("Enter the challenge code and your name.");return}
+if(typeof Peer=="undefined"){if(!re)alert("Live mode needs the internet. Connect and try again, or play alone.");return}
+unlockVoice();try{if(P.peer)P.peer.destroy()}catch(e){}
+P.name=name;P.code=code;P.late=false;const pr=new Peer();P.peer=pr;
+pr.on("open",()=>{const c=pr.connect("fmsc-"+H("j"+code));P.conn=c;c.on("open",()=>c.send({t:"hello",name,code,rejoin:!!re}));c.on("data",onHost);c.on("close",()=>{P.conn=null;if(cv=="lobby"){cv="gate"}render()})});
+pr.on("error",e=>{if(!re)alert(e.type=="peer-unavailable"?"The host is not live yet. Check the code or wait for the host to open the lobby.":"Connection problem: "+e.type)})}
+function onHost(m){
+if(m.t=="ok"){P.name=m.name;P.late=m.late;if(!S.run||S.run.done||!S.run.live){cv="lobby"}render()}
+else if(m.t=="no"){alert(m.why);try{P.peer.destroy()}catch(e){}P.conn=null}
+else if(m.t=="roster"){P.roster=m.n;if(cv=="lobby")render()}
+else if(m.t=="spons"){P.spons=m;if(cv=="lobby")render()}
+else if(m.t=="say"){P.cap=m.text;if(!(S.run&&!S.run.done))speak(m.text);if(cv=="lobby")render()}
+else if(m.t=="start"){P.late=false;P.board=[];lock=false;S.run={name:P.name,qs:m.qs,i:0,ans:[],score:0,secs:m.secs,q0:Date.now(),t0:Date.now(),done:false,live:true,code:P.code};save();render()}
+else if(m.t=="board"){P.board=m.rows;if(S.run&&S.run.done)render()}
+else if(m.t=="lobby"){if(S.run&&S.run.done){S.run=null;save()}P.board=[];cv="lobby";render()}
+else if(m.t=="bye"){P.conn=null;cv="gate";render()}}
+const boardHTML=r=>r.live&&P.board&&P.board.length?`<div class="card"><h3>🏅 Live leaderboard</h3>${P.board.map((x,i)=>`<div class="meta">${i+1}. <b>${esc(x.n)}</b> — ${x.s} pts ${x.d?"✅":"(still playing)"}</div>`).join("")}</div>`:"";
+function rLobby(L){const sp=P.spons&&P.spons.list&&P.spons.list.length?`<div class="card"><h3>🤝 In conjunction with ${esc(P.spons.partner)}</h3>${P.spons.list.map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</div>`:"";
+L.innerHTML=`<div class="card"><h3>✅ You are in, ${esc(P.name)}</h3><div class="meta">${P.late?"The competition has already started. Please wait for the next round.":"Waiting for the host to start the competition…"}</div><div class="meta" style="margin-top:6px">👥 ${P.roster.length} player${P.roster.length==1?"":"s"} joined</div></div>${P.cap?`<div class="card" style="text-align:center;font-size:20px">🔊 ${esc(P.cap)}</div>`:""}${sp}<div class="row" style="flex-wrap:wrap"><button class="sec sm" onclick="VOICE=!VOICE;render()">🔊 Voice: ${VOICE?"on":"off"}</button><button class="sec sm" onclick="sayHow()">How to play</button><button class="sec sm" onclick="leave()">Leave</button></div>`}
+function leave(){try{if(P.peer)P.peer.destroy()}catch(e){}P.conn=null;cv="gate";render()}
 function quickGA(){form({date:`${year}-${String(month+1).padStart(2,"0")}-01`,status:"Planned",title:"Gathering of Angels",ministry:"Gathering of Angels"})}
 function form(x){const sm=tab=="sermons",st=sm?SS:MS;x=x||{date:`${year}-${String(month+1).padStart(2,"0")}-01`,status:st[0]};
 const f=(k,l,t="text")=>`<label>${l}</label><input id="f_${k}" type="${t}" value="${esc(x[k])}">`;
@@ -316,6 +398,8 @@ $("yr").onchange=e=>{year=+e.target.value;render()};
 const hm=/^#ch([0-9]+)$/.exec(location.hash);if(hm){S.chal.secs=Math.min(300,Math.max(5,+hm[1]));save()}
 if(S.run&&!S.run.done){const r=S.run;r.ans.push(-1);r.i++;if(r.i>=r.qs.length)fin(r);else r.q0=Date.now();save()}
 if(S.run)tab="chal";
+addEventListener("load",()=>{if(S.run&&S.run.live&&!S.run.done)joinLive(true)});
 render();
+try{if(navigator.serviceWorker)navigator.serviceWorker.addEventListener("controllerchange",()=>{if(!sessionStorage.getItem("fmsr")){sessionStorage.setItem("fmsr","1");location.reload()}})}catch(e){}
 if("serviceWorker" in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
 </script></body></html>
