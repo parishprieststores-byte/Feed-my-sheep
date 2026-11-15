@@ -31,6 +31,7 @@ button.sec{background:var(--acc2);color:var(--ink)}button.sm{padding:5px 10px;fo
 .modal{position:fixed;inset:0;background:#0007;display:none;align-items:flex-end;justify-content:center;z-index:5}
 .modal.show{display:flex}.sheet{background:var(--bg);width:100%;max-width:720px;max-height:92%;overflow:auto;border-radius:18px 18px 0 0;padding:16px}
 label{display:block;font-size:13px;color:var(--mute);margin:10px 0 3px}
+.tabs{overflow-x:auto}.tabs button{flex:none;padding:10px 13px;white-space:nowrap}details.card summary{cursor:pointer;font-weight:bold;font-size:17px}details ul{margin:8px 0 8px 18px;padding:0}details li{margin-bottom:4px}.due{color:#c0392b;font-weight:bold}
 </style></head><body>
 <header>
 <div class="row"><div style="flex:1"><h1>🐑 Feed My Sheep</h1><div class="verse">“Feed my sheep.” — John 21:17</div></div>
@@ -51,7 +52,7 @@ const OCC=["Gathering of Angels","Easter","Christmas","Harvest/Thanksgiving","Wa
 const SS=["Idea","Preparing","Ready","Preached"],MS=["Planned","In progress","Done"];
 let S={sermons:[],acts:[],special:[]};
 try{const r=localStorage.getItem("fms");if(r)S=JSON.parse(r)}catch(e){}
-S.special=S.special||[];
+S.special=S.special||[];S.people=S.people||[];S.cfg=S.cfg||{church:"",cc:"234"};
 const arr=()=>tab=="sermons"?S.sermons:tab=="acts"?S.acts:S.special;
 const save=()=>{try{localStorage.setItem("fms",JSON.stringify(S))}catch(e){}};
 const now=new Date();let year=now.getFullYear(),month=now.getMonth(),tab="sermons";
@@ -62,11 +63,11 @@ function fmt(d){return d?new Date(d+"T00:00").toLocaleDateString(undefined,{week
 function head(){
 $("yr").innerHTML=[year-1,year,year+1,year+2].map(y=>`<option ${y==year?"selected":""}>${y}</option>`).join("");
 $("months").innerHTML=M.map((m,i)=>`<button class="${tab!="year"&&i==month?"on":""}" onclick="month=${i};tab=tab=='year'?'sermons':tab;render()">${m.slice(0,3)}</button>`).join("");
-$("tabs").innerHTML=[["sermons","Sermons"],["acts","Ministry"],["special","Special"],["year","Year"]].map(([k,v])=>`<button class="${tab==k?"on":""}" onclick="tab='${k}';render()">${v}</button>`).join("");
-$("add").style.display=tab=="year"?"none":"";$("q").style.display=tab=="year"?"none":"";$("spc").style.display=tab=="special"?"":"none";$("ideas").innerHTML=tab=="special"?ideasHTML():""}
+$("tabs").innerHTML=[["sermons","Sermons"],["acts","Ministry"],["special","Special"],["people","People"],["counsel","Counsel"],["care","Care"],["comm","Connect"],["year","Year"]].map(([k,v])=>`<button class="${tab==k?"on":""}" onclick="tab='${k}';render()">${v}</button>`).join("");
+$("add").style.display=["sermons","acts","special","people"].includes(tab)?"":"none";$("q").style.display=["comm","year"].includes(tab)?"none":"";$("months").style.display=["sermons","acts","special"].includes(tab)?"":"none";$("spc").style.display=tab=="special"?"":"none";$("ideas").innerHTML=tab=="special"?ideasHTML():""}
 function inMonth(x){return yOf(x.date)==year&&mOf(x.date)==month}
 function match(x){const q=$("q").value.toLowerCase();return !q||JSON.stringify(x).toLowerCase().includes(q)}
-function render(){head();const L=$("list");
+function render(){head();const L=$("list");if(["people","counsel","care","comm"].includes(tab))return renderNew(L);
 if(tab=="year"){L.innerHTML=`<div class="grid">`+M.map((m,i)=>{const s=S.sermons.filter(x=>yOf(x.date)==year&&mOf(x.date)==i),a=S.acts.filter(x=>yOf(x.date)==year&&mOf(x.date)==i),p=S.special.filter(x=>yOf(x.date)==year&&mOf(x.date)==i);
 return `<div class="card" onclick="month=${i};tab='sermons';render()"><h3>${m}</h3><div class="meta">${s.length} sermon${s.length==1?"":"s"}<br>${a.length} activit${a.length==1?"y":"ies"}<br>${p.length} special</div><div class="meta ok">${s.filter(x=>x.status=="Preached").length+a.filter(x=>x.status=="Done").length+p.filter(x=>x.status=="Done").length} completed</div></div>`}).join("")+`</div>
 <div class="card" style="margin-top:14px"><h3>Backup</h3><div class="meta">Copy this text to keep your data safe, or paste a backup and tap Restore.</div><textarea id="bk" rows="4"></textarea><div class="row" style="margin-top:8px"><button class="sec sm" onclick="$('bk').value=JSON.stringify(S);$('bk').select();try{document.execCommand('copy')}catch(e){}">Copy backup</button><button class="sm" onclick="restore()">Restore</button></div></div><div class="card"><h3>Install & offline</h3><div class="meta">iPhone: Safari → Share → Add to Home Screen.<br>Android: Chrome menu → Install app.<br>Works offline after the first open.</div></div>`;return}
@@ -110,6 +111,103 @@ const IDEAS={
 {t:"Enter His Gates With Thanksgiving",s:"Psalm 100",n:"1) Worship with joy. 2) Know that the Lord is God. 3) His love endures forever."}]};
 function ideasHTML(){return `<h2 style="color:var(--acc);font-size:19px;margin:18px 0 8px">📖 Sermon ideas by occasion</h2>`+Object.keys(IDEAS).map((o,k)=>`<div class="card"><h3>${o=="Gathering of Angels"?"✨ ":""}${o}</h3>`+IDEAS[o].map((x,i)=>`<div style="border-top:1px solid var(--line);padding:8px 0"><b>${x.t}</b><div class="meta">📖 ${x.s}</div><div style="font-size:14px">${x.n}</div><button class="sec sm" style="margin-top:6px" onclick="useIdea(${k},${i})">Add to my sermons</button></div>`).join("")+`</div>`).join("")}
 function useIdea(k,i){const o=Object.keys(IDEAS)[k],x=IDEAS[o][i];tab="sermons";render();form({date:`${year}-${String(month+1).padStart(2,"0")}-01`,status:"Idea",title:x.t,scripture:x.s,series:o,notes:x.n})}
+const COUNSEL=[
+["Grief & loss",["Be present; listen more than you speak","Allow tears; avoid clichés like “God needed another angel”","Offer practical help: meals, errands, funeral arrangements","Check in after 1 week, 1 month and 3 months"],"Psalm 34:18; Romans 12:15; John 11:35; 2 Corinthians 1:3-4; 1 Thessalonians 4:13-14"],
+["Anxiety & fear",["Help them name the exact worry","Pray together and hand it to God","Encourage rest, slow breathing, one day at a time","If it persists, encourage a doctor or counsellor"],"Philippians 4:6-7; 1 Peter 5:7; Matthew 6:25-34; Isaiah 41:10"],
+["Marriage conflict",["Hear each spouse separately first, then together","Handle one issue at a time","Teach listening, apology, forgiveness and kind words","Refer to a marriage counsellor for repeated crises"],"Ephesians 4:26,32; Ephesians 5:25-33; Colossians 3:12-14; Proverbs 15:1"],
+["Abuse & violence",["Safety first: help them reach a safe place","Listen and believe; do not blame","Do not push quick reconciliation","Refer to police, medical and support services"],"Psalm 82:3-4; Psalm 9:9; Proverbs 31:8-9; Isaiah 1:17"],
+["Financial hardship",["Listen without judging","Draw a simple budget: needs first","Encourage honest work, saving and avoiding debt","Link to church help or community support"],"Proverbs 21:5; Philippians 4:19; Matthew 6:33; Proverbs 22:7; Hebrews 13:5"],
+["Unemployment & waiting",["Affirm their worth beyond a job","List skills and small ways to earn","Connect them with church members and networks","Keep a daily routine and prayer time"],"Proverbs 16:3; Colossians 3:23; Psalm 37:5; Ecclesiastes 11:6"],
+["Sickness",["Pray and anoint as the Spirit leads","Encourage proper medical care","Visit briefly and gently","Support the caregivers"],"James 5:14-15; Psalm 103:2-3; 2 Corinthians 12:9; Isaiah 41:10"],
+["Anger & bitterness",["Name the hurt behind the anger","Pause before reacting","Forgiveness is a decision; feelings follow","Repair the relationship where possible"],"James 1:19-20; Ephesians 4:26-27,31-32; Romans 12:17-21; Proverbs 15:1"],
+["Guilt & forgiveness",["Encourage honest confession","Help them receive God’s forgiveness","Make amends where possible","Forgive yourself and others"],"1 John 1:9; Psalm 103:12; Romans 8:1; Matthew 6:14-15; Colossians 3:13"],
+["Loneliness",["Listen and connect them to a small group","Give them a role to serve","Arrange regular contact and visits"],"Psalm 68:6; Hebrews 10:24-25; Deuteronomy 31:6; Ecclesiastes 4:9-10"],
+["Depression & hopelessness",["Listen patiently; do not say “just pray more”","Encourage seeing a doctor or counsellor","Stay in regular contact","If they speak of harming themselves, do not leave them alone; contact emergency services or a trusted family member at once"],"Psalm 42:5,11; Psalm 34:18; 1 Kings 19:4-8; Matthew 11:28"],
+["Addiction & bad habits",["Honest confession without shame","Give an accountability partner","Avoid triggers and bad company","Refer to rehabilitation or a support group"],"1 Corinthians 10:13; Galatians 6:1-2; James 5:16; Romans 12:1-2"],
+["Temptation & purity",["Flee, do not flirt with temptation","Accountability and open conversation","Fill the mind with Scripture","Seek help early"],"1 Corinthians 6:18-20; 2 Timothy 2:22; Psalm 119:9-11; Matthew 26:41"],
+["Parenting & rebellious children",["Pray and stay calm","Set clear, loving boundaries","Spend time and listen","Do not compare children"],"Proverbs 22:6; Ephesians 6:4; Colossians 3:21; Luke 15:20"],
+["Family conflict",["Hear each side fairly","Encourage making the first move for peace","Use a calm elder as mediator"],"Romans 12:18; Matthew 5:23-24; Proverbs 17:9"],
+["Doubt & weak faith",["Welcome honest questions","Read a Gospel together","Recall what God has already done","Invite to a Bible study"],"Mark 9:24; John 20:27-29; Psalm 77:11-12; Hebrews 11:1"],
+["Backsliding & returning",["Welcome warmly, no condemnation","Restore to fellowship gradually","Assign a mentor"],"Luke 15:17-24; Galatians 6:1; Jeremiah 3:22; Psalm 51:10-12"],
+["Waiting on God",["Affirm that God’s timing is good","Encourage faithful service while waiting","Surround them with friends and prayer"],"Psalm 27:14; Isaiah 40:31; Habakkuk 2:3; Lamentations 3:25-26"],
+["Fear of death & terminal illness",["Be present, pray and read Psalm 23","Ask what they want said or settled","Support the family"],"Psalm 23; John 14:1-3; Romans 8:38-39; 1 Corinthians 15:55-57"],
+["Stress & burnout (for ministers too)",["Rest and keep a Sabbath","Share the load with others","Seek a trusted friend or mentor"],"Matthew 11:28-30; Exodus 18:17-18; Mark 6:31"]];
+const CARE=[
+["👩","Widows",["Visit regularly and ask what she needs","Help with food, rent, school fees, repairs","Give her a role in church life","Protect her from exploitation","Remember the anniversary of her loss"],["Foodstuff pack","Cash gift in an envelope","Phone airtime","Cloth or wrapper"],"James 1:27; Exodus 22:22; Acts 6:1-6; 1 Timothy 5:3-5; Isaiah 1:17"],
+["🧒","Orphans",["Link each child with a church family or mentor","Help with school fees, uniforms and books","Celebrate birthdays","Follow local child-protection rules","Give spiritual guidance and skills"],["School bag and stationery","Clothes and shoes","Children’s Bible","A meal outing"],"James 1:27; Psalm 68:5; Deuteronomy 10:18; Psalm 82:3"],
+["👴","Elderly",["Visit and listen to their stories","Help with transport to church","Check medicines and health visits","Help with home repairs","Honour their wisdom"],["Warm blanket or shawl","Reading glasses, large-print Bible","Favourite food","Health supplies"],"Leviticus 19:32; 1 Timothy 5:1-2; Proverbs 16:31; Psalm 71:9,18"],
+["🤲","Needy & poor",["Listen and assess the real need","Give food, clothing, shelter, then skills","Give privately and keep dignity","Keep a church benevolence fund","Follow up"],["Foodstuff pack","Clothes","Money for transport","Tools or small capital for a trade"],"Proverbs 19:17; Proverbs 14:31; Matthew 25:35-40; Galatians 6:2,10"],
+["🚪","Strangers & visitors",["Greet warmly within five minutes","Offer a seat, water and directions","Call within 48 hours","Invite to a meal","Help with lodging or transport"],["Welcome card","Church flier and Bible","Small snack pack"],"Hebrews 13:2; Matthew 25:35; Leviticus 19:34; Romans 12:13"],
+["🏥","Sick & hospital",["Call ahead; keep visits short","Listen and pray gently","Read short Psalms","Help the family with errands"],["Get-well card","Fruit or juice","Toiletries","Help with bills"],"James 5:14-15; Matthew 25:36; Psalm 41:1-3"],
+["🕯️","Bereaved",["Visit in the first days and just be present","Help with funeral arrangements and meals","Return after one week and one month"],["Meals","Card with a Scripture","Help with funeral costs"],"Romans 12:15; Psalm 34:18; 1 Thessalonians 4:13-18"],
+["🌱","New believers & members",["Visit within a week","Assign a mentor","Teach prayer and Bible reading basics","Invite to a small group"],["Bible","Devotional book","Welcome basket"],"1 Peter 2:2; Acts 2:42; Colossians 2:6-7"],
+["👶","New mothers & babies",["Visit with food","Pray and bless the baby","Offer help with chores","Plan the baby dedication"],["Baby clothes and diapers","Food","Congratulation card"],"Psalm 127:3; Mark 10:13-16"],
+["⛓️","Prisoners & their families",["Visit if the prison allows","Write letters of encouragement","Support the family","Help with return to society"],["Letters","Bible and toiletries (check prison rules)","Support for the family"],"Hebrews 13:3; Matthew 25:36; Isaiah 61:1"],
+["🐑","Absent members",["Call warmly and ask how they are","Visit without accusing","Invite them back"],["Card","Favourite snack"],"Luke 15:4-7; Galatians 6:1; Ezekiel 34:16"],
+["♿","People with disabilities",["Make church accessible","Include them in activities and service","Ask what they need rather than assume"],["Transport help","Accessible Bible formats"],"Luke 14:13-14; 2 Samuel 9:1-13; 1 Corinthians 12:22-23"],
+["🎉","Birthdays & celebrations",["Call or visit with a blessing","Pray with the family","Remember weddings, graduations, new jobs"],["Card with a verse","Small gift","Cake or snack"],"Romans 12:15; Psalm 126:3"]];
+const TPL=[
+["Welcome visitor","Dear {name}, thank you for worshipping with us at {church}. You are welcome anytime. God bless you. 🙏"],
+["Follow-up after sermon","Hello {name}, God bless you. I would love to hear how the message is speaking to you and to pray with you. When can we talk?"],
+["Missed service","Hello {name}, we missed you at {church}. We hope you are well. Is there anything we can pray about or help with?"],
+["Birthday","Happy birthday {name}! 🎂 May the Lord bless you with joy, health and peace this new year of your life. – {church}"],
+["Wedding anniversary","Happy anniversary {name}! May God keep strengthening your love and your home. – {church}"],
+["Get well","Dear {name}, we are praying for your healing and strength. God is near to the brokenhearted (Psalm 34:18). You are not alone. – {church}"],
+["Condolence","Dear {name}, we are deeply sorry for your loss. We are praying for you and your family, and we are here for you. – {church}"],
+["Service reminder","Dear {name}, a gentle reminder of our service at {church} on {date}. We look forward to seeing you."],
+["Gathering of Angels invite","Dear {name}, you are warmly invited to our Gathering of Angels special service at {church} on {date}. Come expecting to meet with God, and bring a friend! 🙏"],
+["Prayer request received","Dear {name}, I received your prayer request and I am praying with you. Please tell me how things are going. God is faithful."],
+["Visit request","Dear {name}, God bless you. I would like to visit you on {date}. Please let me know if this works for you."],
+["Encouragement","Dear {name}, you are loved and prayed for. Be strong and courageous; the Lord your God is with you (Joshua 1:9). – {church}"],
+["Thank you","Dear {name}, thank you for your service and generosity at {church}. May God reward you abundantly."],
+["Event announcement","Dear {name}, announcement from {church}: [event] on {date}. Please join us and invite others."]];
+const PST=["Follow up","Discussed","Done"];
+let C={pid:"",name:"",phone:"",tpl:0,date:"",text:""};
+const today=()=>new Date().toISOString().slice(0,10);
+function renderNew(L){if(tab=="people")return rPeople(L);if(tab=="comm")return rComm(L);rLib(L)}
+function rLib(L){const q=$("q").value.toLowerCase(),c=tab=="counsel";
+let h=c?`<div class="card"><h3>🕊️ Counselling guide</h3><div class="meta">Listen first, pray, keep confidences, and refer to a doctor, professional counsellor or emergency services when needed. These are starting points, not a replacement for professional help.</div></div>`:`<div class="card"><h3>✅ Visit checklist</h3><div class="meta"><b>Before:</b> pray, call ahead, prepare a short verse.<br><b>During:</b> greet warmly, listen more than you talk, keep it short, pray, never gossip.<br><b>After:</b> record a note under People and set a follow-up date.</div></div>`;
+const A=(c?COUNSEL:CARE).filter(x=>!q||JSON.stringify(x).toLowerCase().includes(q));
+h+=A.map(x=>c?`<details class="card"><summary>${x[0]}</summary><ul>${x[1].map(s=>`<li>${s}</li>`).join("")}</ul><div class="meta">📖 ${x[2]}</div></details>`
+:`<details class="card"><summary>${x[0]} ${x[1]}</summary><div class="meta" style="margin-top:8px"><b>How to care</b></div><ul>${x[2].map(s=>`<li>${s}</li>`).join("")}</ul><div class="meta"><b>🎁 Gift ideas</b></div><div style="margin:4px 0">${x[3].map(s=>`<span class="tag">${s}</span>`).join("")}</div><div class="meta">📖 ${x[4]}</div><button class="sm" style="margin-top:8px" onclick="planVisit(${CARE.indexOf(x)})">Plan a visit</button></details>`).join("");
+L.innerHTML=h||`<div class="empty">No match.</div>`}
+function planVisit(i){const c=CARE[i];tab="acts";render();form({date:`${year}-${String(month+1).padStart(2,"0")}-01`,status:"Planned",title:"Visitation: "+c[1],ministry:"Visitation",notes:"Gift ideas: "+c[3].join(", ")+"\nScripture: "+c[4]})}
+function rPeople(L){const q=$("q").value.toLowerCase(),t=today();
+const A=S.people.filter(x=>!q||JSON.stringify(x).toLowerCase().includes(q)).sort((a,b)=>(b.date||"")<(a.date||"")?-1:1);
+if(!A.length){L.innerHTML=`<div class="empty">No records yet.<br>Tap ＋ Add to record a person you preached to or ministered to.</div>`;return}
+L.innerHTML=A.map(x=>{const due=x.follow&&x.follow<=t&&x.status!="Done";
+return `<div class="card"><h3>${esc(x.name)}</h3><div class="meta">${fmt(x.date)}${x.place?" · "+esc(x.place):""}${x.phone?" · "+esc(x.phone):""}</div><div style="margin:6px 0">${x.topic?`<span class="tag">🎤 ${esc(x.topic)}</span>`:""}${x.scripture?`<span class="tag">📖 ${esc(x.scripture)}</span>`:""}<span class="tag">${esc(x.status)}</span>${x.follow?`<span class="tag ${due?"due":""}">⏰ ${fmt(x.follow)}${due?" (due)":""}</span>`:""}</div>${x.notes?`<div style="white-space:pre-wrap;font-size:15px">${esc(x.notes)}</div>`:""}
+<div class="row" style="margin-top:8px;flex-wrap:wrap"><button class="sec sm" onclick="pform(S.people.find(p=>p.id=='${x.id}'))">Edit</button><button class="sec sm" onclick="pAdv('${x.id}')">Next status ›</button><button class="sec sm" onclick="tab='comm';cPick('${x.id}')">Message</button><button class="sec sm" onclick="pDel('${x.id}')">Delete</button></div></div>`}).join("")}
+function pform(x){x=x||{date:today(),status:PST[0]};
+const f=(k,l,t="text")=>`<label>${l}</label><input id="p_${k}" type="${t}" value="${esc(x[k])}">`;
+open_(`<h2 style="margin:0;color:var(--acc)">${x.id?"Edit":"New"} record</h2>${f("name","Name")}${f("phone","Phone / WhatsApp","tel")}${f("date","Date preached / ministered","date")}${f("place","Where (church, home, crusade…)")}${f("topic","Sermon / topic preached")}${f("scripture","Scripture")}<label>Notes for future discussion</label><textarea id="p_notes" rows="4">${esc(x.notes)}</textarea>${f("follow","Follow-up date","date")}<label>Status</label><select id="p_status">${PST.map(s=>`<option ${x.status==s?"selected":""}>${s}</option>`).join("")}</select><div class="row" style="margin-top:14px"><button class="sec" onclick="close_()" style="flex:1">Cancel</button><button style="flex:1" onclick="pSave('${x.id||""}')">Save</button></div>`)}
+function pSave(id){const g=k=>$("p_"+k).value.trim();
+const o={name:g("name"),phone:g("phone"),date:g("date"),place:g("place"),topic:g("topic"),scripture:g("scripture"),notes:g("notes"),follow:g("follow"),status:g("status")};
+if(!o.name){$("p_name").focus();return}
+if(id)Object.assign(S.people.find(x=>x.id==id),o);else{o.id=Date.now().toString(36);S.people.push(o)}
+save();close_();render()}
+function pAdv(id){const x=S.people.find(p=>p.id==id),i=PST.indexOf(x.status);x.status=PST[(i+1)%PST.length];save();render()}
+function pDel(id){if(!confirm("Delete this record?"))return;S.people=S.people.filter(x=>x.id!=id);save();render()}
+function gen(){C.text=TPL[C.tpl][1].split("{name}").join(C.name||"friend").split("{church}").join(S.cfg.church||"our church").split("{date}").join(C.date||"[date]")}
+function cg(){gen();$("c_text").value=C.text}
+function cPick(id){const p=S.people.find(x=>x.id==id);C.pid=id;if(p){C.name=p.name;C.phone=p.phone||""}gen();render()}
+function rComm(L){if(!C.text)gen();
+L.innerHTML=`<div class="card"><h3>💬 Send a message</h3>
+<label>Church name (used in messages)</label><input value="${esc(S.cfg.church)}" oninput="S.cfg.church=this.value;save();cg()">
+<label>Country code for WhatsApp (e.g. 234)</label><input value="${esc(S.cfg.cc)}" oninput="S.cfg.cc=this.value.replace(/[^0-9]/g,'');save()">
+<label>Person from your records</label><select onchange="cPick(this.value)"><option value="">Type manually</option>${S.people.map(p=>`<option value="${p.id}" ${C.pid==p.id?"selected":""}>${esc(p.name)}</option>`).join("")}</select>
+<label>Name</label><input value="${esc(C.name)}" oninput="C.name=this.value;cg()">
+<label>Phone</label><input type="tel" value="${esc(C.phone)}" oninput="C.phone=this.value">
+<label>Date / time (if the message needs it)</label><input value="${esc(C.date)}" oninput="C.date=this.value;cg()">
+<label>Message type</label><select onchange="C.tpl=+this.value;cg()">${TPL.map((t,i)=>`<option value="${i}" ${C.tpl==i?"selected":""}>${t[0]}</option>`).join("")}</select>
+<label>Message (you can edit it)</label><textarea id="c_text" rows="7" oninput="C.text=this.value">${esc(C.text)}</textarea>
+<div class="row" style="margin-top:10px;flex-wrap:wrap"><button class="sm" onclick="send('wa')">WhatsApp</button><button class="sm" onclick="send('sms')">SMS</button><button class="sm" onclick="send('mail')">Email</button><button class="sm" onclick="send('call')">Call</button><button class="sec sm" onclick="send('copy')">Copy</button></div></div>`}
+function send(k){const m=encodeURIComponent(C.text);let d=(C.phone||"").replace(/[^0-9]/g,"");if(d.startsWith("0"))d=(S.cfg.cc||"")+d.slice(1);
+if(k=="wa")open(`https://wa.me/${d}?text=${m}`,"_blank");
+else if(k=="sms")location.href=`sms:${C.phone||""}?&body=${m}`;
+else if(k=="mail")location.href=`mailto:?subject=${encodeURIComponent(S.cfg.church||"Greetings")}&body=${m}`;
+else if(k=="call")location.href=`tel:${C.phone||""}`;
+else{try{navigator.clipboard.writeText(C.text)}catch(e){}$("c_text").select();try{document.execCommand("copy")}catch(e){}alert("Copied.")}}
 function quickGA(){form({date:`${year}-${String(month+1).padStart(2,"0")}-01`,status:"Planned",title:"Gathering of Angels",ministry:"Gathering of Angels"})}
 function form(x){const sm=tab=="sermons",st=sm?SS:MS;x=x||{date:`${year}-${String(month+1).padStart(2,"0")}-01`,status:st[0]};
 const f=(k,l,t="text")=>`<label>${l}</label><input id="f_${k}" type="${t}" value="${esc(x[k])}">`;
@@ -128,8 +226,8 @@ function find(id){return arr().find(x=>x.id==id)}
 function edit(id){form(find(id))}
 function adv(id){const x=find(id),st=tab=="sermons"?SS:MS,i=st.indexOf(x.status);x.status=i==st.length-1?st[0]:st[i+1];save();render()}
 function del(id){if(!confirm("Delete this item?"))return;const k=tab=="sermons"?"sermons":tab=="acts"?"acts":"special";S[k]=S[k].filter(x=>x.id!=id);save();render()}
-function restore(){try{const d=JSON.parse($("bk").value);if(d.sermons&&d.acts){S=d;S.special=S.special||[];save();render();alert("Restored.")}else throw 0}catch(e){alert("That backup text isn’t valid.")}}
-$("add").onclick=()=>form();$("q").oninput=render;
+function restore(){try{const d=JSON.parse($("bk").value);if(d.sermons&&d.acts){S=d;S.special=S.special||[];S.people=S.people||[];S.cfg=S.cfg||{church:"",cc:"234"};save();render();alert("Restored.")}else throw 0}catch(e){alert("That backup text isn’t valid.")}}
+$("add").onclick=()=>tab=="people"?pform():form();$("q").oninput=render;
 $("yr").onchange=e=>{year=+e.target.value;render()};
 render();
 if("serviceWorker" in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
