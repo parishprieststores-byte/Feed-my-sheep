@@ -32,6 +32,7 @@ button.sec{background:var(--acc2);color:var(--ink)}button.sm{padding:5px 10px;fo
 .modal.show{display:flex}.sheet{background:var(--bg);width:100%;max-width:720px;max-height:92%;overflow:auto;border-radius:18px 18px 0 0;padding:16px}
 label{display:block;font-size:13px;color:var(--mute);margin:10px 0 3px}
 .tabs{overflow-x:auto}.tabs button{flex:none;padding:10px 13px;white-space:nowrap}details.card summary{cursor:pointer;font-weight:bold;font-size:17px}details ul{margin:8px 0 8px 18px;padding:0}details li{margin-bottom:4px}.opt{display:block;width:100%;text-align:left;margin:8px 0;background:var(--card);color:var(--ink);border:1px solid var(--line);padding:12px 14px;font-size:16px}.opt.sel{background:var(--acc);color:var(--bg)}.track{height:8px;background:var(--acc2);border-radius:9px;overflow:hidden}.fill{height:100%;background:var(--acc)}input[type=checkbox]{width:auto;margin-right:8px}.big{font-size:19px;padding:16px;width:100%;margin-top:8px}.hl{background:var(--acc);color:var(--bg)}.due{color:#c0392b;font-weight:bold}
+.nocopy,.nocopy *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 </style></head><body>
 <header>
 <div class="row"><div style="flex:1"><h1>🐑 Feed My Sheep</h1><div class="verse">“Feed my sheep.” — John 21:17</div></div>
@@ -259,14 +260,14 @@ function rChal(L){const r=S.run;if(r&&!r.done)return showQ(L);if(r&&r.done)retur
 if(cv=="host"&&isAdmin)return rHost(L);if(cv=="lobby")return rLobby(L);if(cv=="wait")return rWait(L);if(cv=="admin"&&isAdmin)return rAdmin(L);
 if(cv=="name"){L.innerHTML=`<div class="card"><h2 style="margin:0;color:var(--acc)">Ready?</h2><ul><li>50 mixed questions</li><li>${S.chal.secs} seconds per question</li><li>Once you choose an answer you cannot go back</li><li>Results appear automatically at the end</li></ul><label>Your name</label><input id="cn" placeholder="Full name"><button style="margin-top:12px;width:100%" onclick="begin()">▶ Start</button></div>`;return}
 if(cv=="alogin"||cv=="asetup"){const s=cv=="asetup";L.innerHTML=`<div class="card"><h3>🛡️ Admin ${s?"setup":"login"}</h3><div class="meta">${s?"Create an admin PIN (at least 4 characters). Keep it private.":"Enter the admin PIN."}</div><label>PIN</label><input id="ap1" type="password">${s?`<label>Repeat PIN</label><input id="ap2" type="password">`:""}<div class="row" style="margin-top:12px"><button class="sec" style="flex:1" onclick="cv='gate';render()">Back</button><button style="flex:1" onclick="${s?"admSetup()":"admLogin()"}">${s?"Create":"Enter"}</button></div></div>`;return}
-L.innerHTML=`<div class="card"><h2 style="margin:0;color:var(--acc)">🏆 Feed My Sheep Challenge</h2><div class="meta" style="margin:6px 0 10px">50 questions on Bible, academics, investigations, morals &amp; ethics, security, safety and ICT. Get the challenge code from the host. Playing alone needs the host’s approval.</div><label>Challenge code</label><input id="jc" type="tel" inputmode="numeric" placeholder="Enter code"><label>Your name</label><input id="cn" placeholder="Full name"><button class="big" onclick="joinLive()">Join live challenge</button><button class="sec" style="width:100%;margin-top:8px" onclick="joinLive(false,true)">🙋 Request to play alone</button><button class="sec sm" style="margin-top:8px" onclick="sayHow()">🔊 How to play</button></div><div style="text-align:center"><button class="sm" onclick="admGo()">🛡️ Host / Admin</button></div>`}
+L.innerHTML=`<div class="card"><h2 style="margin:0;color:var(--acc)">🏆 Feed My Sheep Challenge</h2><div class="meta" style="margin:6px 0 10px">50 questions on Bible, academics, investigations, morals &amp; ethics, security, safety and ICT. Get the challenge code from the host. Playing alone needs the host’s approval.<br>⚠️ Leaving the app during a live challenge ends your attempt, with no re-entry. Turn on Do Not Disturb first so calls and notifications do not interrupt you.</div><label>Challenge code</label><input id="jc" type="tel" inputmode="numeric" placeholder="Enter code"><label>Your name</label><input id="cn" placeholder="Full name"><button class="big" onclick="joinLive()">Join live challenge</button><button class="sec" style="width:100%;margin-top:8px" onclick="joinLive(false,true)">🙋 Request to play alone</button><button class="sec sm" style="margin-top:8px" onclick="sayHow()">🔊 How to play</button></div><div style="text-align:center"><button class="sm" onclick="admGo()">🛡️ Host / Admin</button></div>`}
 function joinC(){if(H("j"+$("jc").value.trim())==S.chal.jh){cv="name";render()}else alert("Wrong code. Ask the admin for the correct challenge code.")}
 function admGo(){cv=isAdmin?"admin":S.chal.ah?"alogin":"asetup";render()}
 function admLogin(){if(H("a"+$("ap1").value)==S.chal.ah){isAdmin=true;cv="admin";render()}else alert("Wrong PIN.")}
 function admSetup(){const a=$("ap1").value;if(a.length<4||a!=$("ap2").value){alert("PIN must be at least 4 characters and both entries must match.");return}S.chal.ah=H("a"+a);save();isAdmin=true;cv="admin";render()}
 function begin(){const n=$("cn").value.trim();if(!n){$("cn").focus();return}S.run={name:n,qs:buildQuiz(),i:0,ans:[],score:0,secs:S.chal.secs,q0:Date.now(),t0:Date.now(),done:false};lock=false;save();render()}
 function showQ(L){const r=S.run,q=r.qs[r.i],ct=CATS[q.c];
-L.innerHTML=`<div class="card"><div class="row"><b style="flex:1">Question ${r.i+1} of ${r.qs.length}</b><span class="tag">${ct[1]} ${ct[0]}</span></div><div class="track" style="margin:10px 0"><div class="fill" id="tb" style="width:100%"></div></div><div class="meta" id="tt"></div><h3 style="margin:12px 0;font-size:19px">${esc(q.q)}</h3>${q.o.map((o,k)=>`<button class="opt" onclick="pick(${k})">${"ABCD"[k]}. ${esc(o)}</button>`).join("")}</div>`;
+L.innerHTML=`<div class="card nocopy"><div class="row"><b style="flex:1">Question ${r.i+1} of ${r.qs.length}</b><span class="tag">${ct[1]} ${ct[0]}</span></div><div class="track" style="margin:10px 0"><div class="fill" id="tb" style="width:100%"></div></div><div class="meta" id="tt"></div><h3 style="margin:12px 0;font-size:19px">${esc(q.q)}</h3>${q.o.map((o,k)=>`<button class="opt" onclick="pick(${k})">${"ABCD"[k]}. ${esc(o)}</button>`).join("")}</div>`;
 clearInterval(TI);TI=setInterval(tick,200);tick()}
 function tick(){const r=S.run;if(!r||r.done||!$("tb")){clearInterval(TI);return}const rem=r.secs-(Date.now()-r.q0)/1000;if(rem<=0){pick(-1);return}$("tb").style.width=(100*rem/r.secs)+"%";$("tt").textContent="⏱ "+Math.ceil(rem)+" s"}
 function pick(k){const r=S.run;if(lock||!r||r.done)return;lock=true;clearInterval(TI);
@@ -274,12 +275,12 @@ if(k>=0){const b=document.querySelectorAll(".opt")[k];if(b)b.classList.add("sel"
 setTimeout(()=>{r.ans.push(k);if(k==r.qs[r.i].a)r.score++;r.i++;if(r.i>=r.qs.length)fin(r);else r.q0=Date.now();if(r.live){if(r.tie){if(r.done)sendHost({t:"tdone",s:r.score,sec:Math.round((r.end-r.t0)/1000)})}else sendHost(r.done?{t:"done",s:r.score,n:r.qs.length,by:byOf(r),sec:Math.round((r.end-r.t0)/1000)}:{t:"prog",i:r.i,s:r.score})}save();lock=false;render()},k>=0?250:0)}
 function fin(r){r.done=true;r.end=Date.now();if(!r.tie)S.results.push({name:r.name,score:r.score,n:r.qs.length,sec:Math.round((r.end-r.t0)/1000),at:new Date().toISOString().slice(0,16).replace("T"," ")})}
 const TT=s=>s>=45?"Master Shepherd 🏆":s>=38?"Faithful Servant ⭐":s>=30?"Good Steward 👏":s>=20?"Growing Disciple 🌱":"Keep Learning 📚";
-function showRes(L){const r=S.run,n=r.qs.length,pc=Math.round(100*r.score/n),bc={};
+function showRes(L){const r=S.run;if(r.left){L.innerHTML=`<div class="card" style="text-align:center"><div style="font-size:42px">⛔</div><h3>You left the challenge</h3><div class="meta">Leaving the app during a live challenge ends your attempt, and you cannot re-enter it. The host has been informed.</div><button style="margin-top:12px" onclick="again()">Close</button></div>`;return}const n=r.qs.length,pc=Math.round(100*r.score/n),bc={};
 r.qs.forEach((q,i)=>{const b=bc[q.c]=bc[q.c]||[0,0];b[1]++;if(r.ans[i]==q.a)b[0]++});
 const miss=r.qs.map((q,i)=>r.ans[i]==q.a?"":`<div style="border-top:1px solid var(--line);padding:8px 0"><div style="font-size:15px">${i+1}. ${esc(q.q)}</div><div class="meta">Your answer: ${r.ans[i]<0?"no answer (time up)":esc(q.o[r.ans[i]])}<br>Correct: <b class="ok">${esc(q.o[q.a])}</b></div></div>`).join("");
 L.innerHTML=`<div class="card" style="text-align:center"><div style="font-size:42px">🏆</div>${r.tie?`<div class="meta">⚖️ Tie-breaker round</div>`:""}<h2 style="margin:4px 0">${esc(r.name)}</h2><div style="font-size:40px;color:var(--acc);font-weight:bold">${r.score} / ${n}</div><div class="meta">${pc}% · ${TT(r.score)} · ${Math.round((r.end-r.t0)/1000)} s</div></div>${boardHTML(r)}<div class="card"><h3>By subject</h3>${Object.keys(bc).map(c=>`<div class="meta">${CATS[c][1]} ${CATS[c][0]}: <b>${bc[c][0]}/${bc[c][1]}</b></div>`).join("")}</div><div class="card"><h3>Review</h3>${miss||"Perfect score! Nothing missed. 🎉"}</div><div class="row" style="flex-wrap:wrap"><button onclick="cpRes()">Copy my result</button><button class="sec" onclick="again()">Finish</button></div>`}
 function cpRes(){const r=S.run;cpy(r.name+" – "+r.score+"/"+r.qs.length+" ("+Math.round(100*r.score/r.qs.length)+"%) – "+TT(r.score)+" – Feed My Sheep Challenge")}
-function again(){const so=S.run&&S.run.solo;S.run=null;save();if(so)return leave();cv=P.conn&&P.conn.open?"lobby":"gate";render()}
+function again(){const so=S.run&&(S.run.solo||S.run.left);S.run=null;save();if(so)return leave();cv=P.conn&&P.conn.open?"lobby":"gate";render()}
 function rAdmin(L){const R=S.results.slice().sort((a,b)=>b.score-a.score||a.sec-b.sec),link=location.href.split("#")[0]+"#ch"+S.chal.secs;
 const left=Object.keys(CATS).map(c=>{const b=bankOf(c);return CATS[c][1]+" "+CATS[c][0]+": "+b.filter(s=>!S.used[kOf(s)]).length+" unused of "+b.length+(GEN[c]?" (+ endless generated)":"")}).join("<br>");
 L.innerHTML=`<div class="card"><h3>🛡️ Admin panel</h3><div class="row" style="flex-wrap:wrap"><button class="sec sm" onclick="cv='gate';render()">Participant screen</button><button class="sec sm" onclick="isAdmin=false;cv='gate';render()">Lock admin</button></div></div>
@@ -304,46 +305,48 @@ function speak(t){return new Promise(res=>{if(!SY||!VOICE){setTimeout(res,Math.m
 const up=()=>{if(cv=="host"&&HOST&&tab=="chal")render()};
 function bc(m){if(!HOST)return;Object.values(HOST.players).forEach(p=>{try{if(p.conn&&p.conn.open&&(!p.solo||m.t=="bye"))p.conn.send(m)}catch(e){}})}
 function say(t,spk){if(HOST){HOST.cap=t;if(HOST.opts.vo)bc({t:"say",text:spk||t});up()}return speak(spk||t)}
-const howTo=()=>"Welcome to the Feed My Sheep Challenge. You will answer fifty questions on the Bible, academics, investigations, morals and ethics, security, safety and I C T. Each question gives you "+S.chal.secs+" seconds. Choose one answer. Once you choose, you cannot go back. If time runs out, the question is marked wrong. Your results will appear automatically at the end. Play honestly, and may God bless you.";
+const howTo=()=>"Welcome to the Feed My Sheep Challenge. You will answer fifty questions on the Bible, academics, investigations, morals and ethics, security, safety and I C T. Each question gives you "+S.chal.secs+" seconds. Choose one answer. Once you choose, you cannot go back. If time runs out, the question is marked wrong. Your results will appear automatically at the end. Do not leave the app during the challenge. If you do, your attempt ends and you cannot re-enter. Play honestly, and may God bless you.";
 function sayHow(){unlockVoice();if(HOST&&cv=="host")say(howTo());else speak(howTo())}
 async function announceSponsors(){unlockVoice();const sp=S.sponsors;if(!sp.length){alert("Add sponsor names first.");return}if(HOST&&HOST.b2)return;if(HOST)HOST.b2=true;
 await say("In conjunction with "+S.chal.partner+", this challenge is proudly sponsored by:","This challenge is held in conjunction with "+spell(S.chal.partner)+", and is proudly sponsored by:");
 for(let i=0;i<sp.length;i++){if(HOST){HOST.hl=i;up()}await say(sp[i])}
 if(HOST)HOST.hl=-1;await say("Thank you to all our sponsors for your generous support.");if(HOST){HOST.b2=false;up()}}
 function saveSpons(){S.chal.partner=$("sp_p").value.trim()||"FSCS";S.sponsors=$("sp_l").value.split("\n").map(x=>x.trim()).filter(Boolean);save();alert("Sponsors saved.")}
-function openHost(){if(typeof Peer=="undefined"){alert("Live hosting needs the internet. Connect and reload the app.");return}
+function openHost(){if(typeof Peer=="undefined"){alert("Live hosting needs the internet. Connect and reload the app.");return}full();wake();
 if(HOST&&HOST.peer&&!HOST.peer.destroyed){cv="host";render();return}
 HOST={tlog:[],status:"Connecting…",players:{},started:false,qs:[],opts:{sp:true,vo:true},hl:-1,busy:false,b2:false,cap:"",round:0};
 const pr=new Peer("fmsc-"+S.chal.jh);HOST.peer=pr;
 pr.on("open",()=>{HOST.status="🟢 Lobby open";up()});
 pr.on("error",e=>{HOST.status="⚠️ "+(e.type=="unavailable-id"?"This code is already being hosted. Close other hosts, wait a minute and try again.":e.type);up()});
-pr.on("connection",c=>{c.on("data",m=>hostMsg(c,m));c.on("close",()=>{const p=HOST&&HOST.players[c.__n];if(p&&p.conn===c){p.on=false;roster();up()}})});
+pr.on("connection",c=>{c.on("data",m=>hostMsg(c,m));c.on("close",()=>{const p=HOST&&HOST.players[c.__n];if(p&&p.conn===c){p.on=false;if(p.in&&!p.done&&(p.solo||HOST.started))dq(c.__n);roster();up()}})});
 cv="host";render()}
 function roster(){bc({t:"roster",n:Object.keys(HOST.players).filter(k=>HOST.players[k].on&&!HOST.players[k].solo)})}
-function board(){const rows=Object.keys(HOST.players).map(n=>Object.assign({n},HOST.players[n])).filter(p=>p.in&&!p.solo).sort(cmpP).map(p=>({n:p.n,s:p.s,d:p.done,tb:p.tb||[]}));bc({t:"board",rows})}
+function board(){const rows=Object.keys(HOST.players).map(n=>Object.assign({n},HOST.players[n])).filter(p=>p.in&&!p.solo&&!p.dq).sort(cmpP).map(p=>({n:p.n,s:p.s,d:p.done,tb:p.tb||[]}));bc({t:"board",rows})}
 function hostMsg(c,m){if(!HOST)return;
 if(m.t=="hello"){if(H("j"+String(m.code).trim())!=S.chal.jh){c.send({t:"no",why:"Wrong code."});setTimeout(()=>c.close(),400);return}
+if(HOST.started&&(HOST.left||[]).includes(String(m.name||"Player").slice(0,30))){c.send({t:"no",why:"You left this challenge and cannot re-enter."});setTimeout(()=>c.close(),400);return}
 const solo=!!m.solo;let n=String(m.name||"Player").slice(0,30),ex=HOST.players[n];
 if(ex&&!m.rejoin){let k=2;while(HOST.players[n+" "+k])k++;n=n+" "+k;ex=null}
 const p=HOST.players[n]=ex||{s:0,i:0,done:false,sec:0,in:false};p.conn=c;p.on=true;c.__n=n;
 if(solo){p.solo=true;p.pending=true;p.in=false;c.send({t:"wait"});up();return}
-c.send({t:"ok",name:n,late:HOST.started&&!(ex&&ex.in)});c.send({t:"spons",partner:S.chal.partner,list:S.sponsors});roster();up()}
+c.send({t:"ok",rid:HOST.started?HOST.rid:0,name:n,late:HOST.started&&!(ex&&ex.in)});c.send({t:"spons",partner:S.chal.partner,list:S.sponsors});roster();up()}
 else if(m.t=="prog"){const p=HOST.players[c.__n];if(p){p.i=m.i;p.s=m.s;up()}}
 else if(m.t=="done"){const p=HOST.players[c.__n];if(p){p.done=true;p.s=m.s;p.sec=m.sec;p.by=m.by;S.results.push({name:c.__n,score:m.s,n:m.n||HOST.qs.length,sec:m.sec,at:new Date().toISOString().slice(0,16).replace("T"," ")});snap();board();up()}}
-else if(m.t=="tdone"){const p=HOST.players[c.__n],t=HOST.tbRun;if(p&&t&&t.names.includes(c.__n)){t.got[c.__n]=m.s;checkTb()}}}
+else if(m.t=="tdone"){const p=HOST.players[c.__n],t=HOST.tbRun;if(p&&t&&t.names.includes(c.__n)){t.got[c.__n]=m.s;checkTb()}}
+else if(m.t=="left"){dq(c.__n)}}
 async function startComp(){if(!HOST||HOST.busy)return;if(!Object.values(HOST.players).some(p=>p.on&&!p.solo)){alert("No players have joined yet.");return}
 HOST.busy=true;up();unlockVoice();
 if(HOST.opts.sp&&S.sponsors.length)await announceSponsors();
 for(const n of ["3","2","1"])await say(n);
 await say("Go!");
-HOST.qs=buildQuiz();HOST.started=true;HOST.round++;HOST.tlog=[];HOST.skipTie=false;HOST.tbRun=null;
-Object.values(HOST.players).filter(p=>!p.solo).forEach(p=>{p.in=!!p.on;p.s=0;p.i=0;p.done=false;p.sec=0;p.tb=[];p.by=null});
-bc({t:"start",qs:HOST.qs,secs:S.chal.secs});save();HOST.busy=false;up()}
+HOST.qs=buildQuiz();HOST.started=true;HOST.round++;HOST.tlog=[];HOST.left=[];HOST.rid=Date.now();HOST.skipTie=false;HOST.tbRun=null;
+Object.values(HOST.players).filter(p=>!p.solo).forEach(p=>{p.in=!!p.on;p.s=0;p.i=0;p.done=false;p.sec=0;p.tb=[];p.by=null;p.dq=false});
+bc({t:"start",rid:HOST.rid,qs:HOST.qs,secs:S.chal.secs});save();HOST.busy=false;up()}
 function endRound(){if(!HOST)return;if(HOST.started)snap();HOST.started=false;Object.values(HOST.players).forEach(p=>{p.in=false});bc({t:"lobby"});up()}
-function closeHost(){if(!confirm("Close the lobby? Players will be disconnected."))return;try{bc({t:"bye"});HOST.peer.destroy()}catch(e){}HOST=null;cv="admin";render()}
+function closeHost(){if(!confirm("Close the lobby? Players will be disconnected."))return;try{bc({t:"bye"});HOST.peer.destroy()}catch(e){}unwake();HOST=null;cv="admin";render()}
 function rHost(L){const h=HOST;if(!h){L.innerHTML=`<div class="card">Lobby closed.<br><button style="margin-top:8px" onclick="cv='admin';render()">Back to admin</button></div>`;return}
 const ps=Object.keys(h.players).map(n=>Object.assign({n},h.players[n])),on=ps.filter(p=>p.on&&!p.solo);
-const rows=h.started?ps.filter(p=>p.in&&!p.solo).sort(cmpP).map((p,i)=>`<div class="meta">${i+1}. <b>${esc(p.n)}</b> — ${p.s} pts · Q${p.i}/${h.qs.length}${(p.tb||[]).length?" · tie-break "+p.tb.join("+"):""}${p.done?" ✅ finished":""}${p.on?"":" (offline)"}</div>`).join(""):on.map(p=>`<div class="meta">🟢 ${esc(p.n)}</div>`).join("");
+const rows=h.started?ps.filter(p=>p.in&&!p.solo).sort(cmpP).map((p,i)=>`<div class="meta">${i+1}. <b>${esc(p.n)}</b> — ${p.s} pts · Q${p.i}/${h.qs.length}${(p.tb||[]).length?" · tie-break "+p.tb.join("+"):""}${p.dq?" ⛔ left the app (disqualified)":p.done?" ✅ finished":""}${p.on?"":" (offline)"}</div>`).join(""):on.map(p=>`<div class="meta">🟢 ${esc(p.n)}</div>`).join("");
 const rd=h.started&&ps.filter(p=>p.in&&!p.solo).every(p=>p.done||!p.on),tg=rd?ties():null;
 const eq=n=>encodeURIComponent(n).replace(/'/g,"%27");
 const sq=ps.filter(p=>p.solo&&p.pending&&p.on).map(p=>`<div class="row" style="margin:6px 0"><b style="flex:1">${esc(p.n)}</b><button class="sm" onclick="approveSolo(decodeURIComponent('${eq(p.n)}'))">Approve</button><button class="sec sm" onclick="denySolo(decodeURIComponent('${eq(p.n)}'))">Deny</button></div>`).join("");
@@ -361,40 +364,40 @@ function sendHost(m){try{if(P.conn&&P.conn.open)P.conn.send(m)}catch(e){}}
 function joinLive(re,solo){const code=re?S.run.code:$("jc").value.trim(),name=re?S.run.name:$("cn").value.trim();
 if(!code||!name){alert("Enter the challenge code and your name.");return}
 if(typeof Peer=="undefined"){if(!re)alert("Live mode needs the internet. Connect and try again, or play alone.");return}
-unlockVoice();try{if(P.peer)P.peer.destroy()}catch(e){}
+unlockVoice();full();wake();try{if(P.peer)P.peer.destroy()}catch(e){}
 P.name=name;P.code=code;P.late=false;P.solo=!!solo;const pr=new Peer();P.peer=pr;
 pr.on("open",()=>{const c=pr.connect("fmsc-"+H("j"+code));P.conn=c;c.on("open",()=>c.send({t:"hello",name,code,rejoin:!!re,solo:!!solo}));c.on("data",onHost);c.on("close",()=>{P.conn=null;if(cv=="lobby"||cv=="wait"){cv="gate"}render()})});
 pr.on("error",e=>{if(!re)alert(e.type=="peer-unavailable"?"The host is not live yet. Check the code or wait for the host to open the lobby.":"Connection problem: "+e.type)})}
 function onHost(m){
-if(m.t=="ok"){P.name=m.name;P.late=m.late;if(!S.run||S.run.done||!S.run.live){cv="lobby"}render()}
+if(m.t=="ok"){if(m.rid&&S.dqRid==m.rid){alert("You left this challenge and cannot re-enter.");leave();return}P.name=m.name;P.late=m.late;if(!S.run||S.run.done||!S.run.live){cv="lobby"}render()}
 else if(m.t=="no"){alert(m.why);try{P.peer.destroy()}catch(e){}P.conn=null}
 else if(m.t=="wait"){cv="wait";render()}
 else if(m.t=="denied"){alert("The host did not approve your request to play alone.");leave()}
-else if(m.t=="solo"){lock=false;S.run={name:P.name,qs:m.qs,i:0,ans:[],score:0,secs:m.secs,q0:Date.now(),t0:Date.now(),done:false,live:true,solo:true,code:P.code};save();render()}
-else if(m.t=="tie"){lock=false;S.run={name:P.name,qs:m.qs,i:0,ans:[],score:0,secs:m.secs,q0:Date.now(),t0:Date.now(),done:false,live:true,tie:true,code:P.code};save();render()}
+else if(m.t=="solo"){lock=false;S.run={name:P.name,qs:m.qs,i:0,ans:[],score:0,secs:m.secs,q0:Date.now(),t0:Date.now(),done:false,live:true,rid:m.rid,solo:true,code:P.code};save();render()}
+else if(m.t=="tie"){lock=false;S.run={name:P.name,qs:m.qs,i:0,ans:[],score:0,secs:m.secs,q0:Date.now(),t0:Date.now(),done:false,live:true,rid:m.rid,tie:true,code:P.code};save();render()}
 else if(m.t=="roster"){P.roster=m.n;if(cv=="lobby")render()}
 else if(m.t=="spons"){P.spons=m;if(cv=="lobby")render()}
 else if(m.t=="say"){P.cap=m.text;if(!(S.run&&!S.run.done))speak(m.text);if(cv=="lobby")render()}
-else if(m.t=="start"){P.late=false;P.board=[];lock=false;S.run={name:P.name,qs:m.qs,i:0,ans:[],score:0,secs:m.secs,q0:Date.now(),t0:Date.now(),done:false,live:true,code:P.code};save();render()}
+else if(m.t=="start"){P.late=false;P.board=[];lock=false;S.run={name:P.name,qs:m.qs,i:0,ans:[],score:0,secs:m.secs,q0:Date.now(),t0:Date.now(),done:false,live:true,rid:m.rid,code:P.code};save();render()}
 else if(m.t=="board"){P.board=m.rows;if(S.run&&S.run.done)render()}
 else if(m.t=="lobby"){if(S.run&&S.run.done){S.run=null;save()}P.board=[];cv="lobby";render()}
 else if(m.t=="bye"){P.conn=null;cv="gate";render()}}
 const boardHTML=r=>r.live&&P.board&&P.board.length?`<div class="card"><h3>🏅 Live leaderboard</h3>${P.board.map((x,i)=>`<div class="meta">${i+1}. <b>${esc(x.n)}</b> — ${x.s} pts${x.tb&&x.tb.length?" +tie-break "+x.tb.join("/"):""} ${x.d?"✅":"(still playing)"}</div>`).join("")}</div>`:"";
 function rLobby(L){const sp=P.spons&&P.spons.list&&P.spons.list.length?`<div class="card"><h3>🤝 In conjunction with ${esc(P.spons.partner)}</h3>${P.spons.list.map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</div>`:"";
-L.innerHTML=`<div class="card"><h3>✅ You are in, ${esc(P.name)}</h3><div class="meta">${P.late?"The competition has already started. Please wait for the next round.":"Waiting for the host to start the competition…"}</div><div class="meta" style="margin-top:6px">👥 ${P.roster.length} player${P.roster.length==1?"":"s"} joined</div></div>${P.cap?`<div class="card" style="text-align:center;font-size:20px">🔊 ${esc(P.cap)}</div>`:""}${sp}<div class="row" style="flex-wrap:wrap"><button class="sec sm" onclick="VOICE=!VOICE;render()">🔊 Voice: ${VOICE?"on":"off"}</button><button class="sec sm" onclick="sayHow()">How to play</button><button class="sec sm" onclick="leave()">Leave</button></div>`}
-function approveSolo(n){const p=HOST&&HOST.players[n];if(!p||!p.pending)return;p.pending=false;p.in=true;p.s=0;p.i=0;p.done=false;try{p.conn.send({t:"solo",qs:buildQuiz(),secs:S.chal.secs})}catch(e){}save();up()}
+L.innerHTML=`<div class="card"><h3>✅ You are in, ${esc(P.name)}</h3><div class="meta">${P.late?"The competition has already started. Please wait for the next round.":"Waiting for the host to start the competition. Stay in the app: if you leave once it starts, you cannot re-enter."}</div><div class="meta" style="margin-top:6px">👥 ${P.roster.length} player${P.roster.length==1?"":"s"} joined</div></div>${P.cap?`<div class="card" style="text-align:center;font-size:20px">🔊 ${esc(P.cap)}</div>`:""}${sp}<div class="row" style="flex-wrap:wrap"><button class="sec sm" onclick="VOICE=!VOICE;render()">🔊 Voice: ${VOICE?"on":"off"}</button><button class="sec sm" onclick="sayHow()">How to play</button><button class="sec sm" onclick="leave()">Leave</button></div>`}
+function approveSolo(n){const p=HOST&&HOST.players[n];if(!p||!p.pending)return;p.pending=false;p.in=true;p.s=0;p.i=0;p.done=false;try{p.conn.send({t:"solo",rid:"s"+Date.now(),qs:buildQuiz(),secs:S.chal.secs})}catch(e){}save();up()}
 function denySolo(n){const p=HOST&&HOST.players[n];if(!p)return;try{p.conn.send({t:"denied"});setTimeout(()=>p.conn.close(),400)}catch(e){}delete HOST.players[n];up()}
 function rWait(L){L.innerHTML=`<div class="card"><h3>⏳ Waiting for approval</h3><div class="meta">Your request to play alone has been sent. The host must approve it before you can start.</div><button class="sec" style="margin-top:10px" onclick="leave()">Cancel</button></div>`}
-function leave(){try{if(P.peer)P.peer.destroy()}catch(e){}P.conn=null;cv="gate";render()}
+function leave(){unwake();try{if(P.peer)P.peer.destroy()}catch(e){}P.conn=null;cv="gate";render()}
 
 const ord=n=>n+(["th","st","nd","rd"][(n%100>10&&n%100<14)?0:(n%10<4?n%10:0)]);
 const key=p=>p.s+"|"+(p.tb||[]).join(",");
 const tbCmp=(a,b)=>{const x=a.tb||[],y=b.tb||[],n=Math.max(x.length,y.length);for(let i=0;i<n;i++){const u=i<x.length?x[i]:-1,v=i<y.length?y[i]:-1;if(u!=v)return v-u}return 0};
 const cmpP=(a,b)=>b.s-a.s||tbCmp(a,b)||a.sec-b.sec;
-const ranked=()=>Object.keys(HOST.players).map(n=>Object.assign({n},HOST.players[n])).filter(p=>p.in&&!p.solo).sort(cmpP);
+const ranked=()=>Object.keys(HOST.players).map(n=>Object.assign({n},HOST.players[n])).filter(p=>p.in&&!p.solo&&!p.dq).sort(cmpP);
 function ties(){if(!HOST||HOST.skipTie)return null;const rk=ranked();for(let i=0;i<rk.length&&i<3;i++){const g=rk.filter(p=>key(p)==key(rk[i]));if(g.length>1&&rk.findIndex(p=>key(p)==key(rk[i]))==i)return{names:g.map(p=>p.n),start:i}}return null}
 function byOf(r){const by={};r.qs.forEach((q,i)=>{const b=by[q.c]=by[q.c]||[0,0];b[1]++;if(r.ans[i]==q.a)b[0]++});return by}
-function snap(){if(!HOST)return S.last;const rk=ranked(),rows=[];rk.forEach((p,i)=>{rows.push({n:p.n,s:p.s,sec:p.sec||0,tb:(p.tb||[]).slice(),by:p.by||null,rank:i>0&&key(p)==key(rk[i-1])?rows[i-1].rank:i+1})});
+function snap(){if(!HOST)return S.last;const rk=ranked(),rows=[];rk.forEach((p,i)=>{rows.push({n:p.n,s:p.s,sec:p.sec||0,tb:(p.tb||[]).slice(),by:p.by||null,rank:i>0&&key(p)==key(rk[i-1])?rows[i-1].rank:i+1})});Object.keys(HOST.players).forEach(k=>{const p=HOST.players[k];if(p.in&&!p.solo&&p.dq)rows.push({n:k,s:p.s,sec:p.sec||0,tb:[],by:p.by||null,rank:"DQ",dq:true})});
 S.last={at:new Date().toISOString().slice(0,16).replace("T"," "),n:(HOST.qs&&HOST.qs.length)||50,secs:S.chal.secs,partner:S.chal.partner,spons:S.sponsors.slice(),rows,ties:HOST.tlog||[]};save();return S.last}
 function oneQ(c){const bank=bankOf(c);let f=bank.filter(s=>!S.used[kOf(s)]);
 if(GEN[c]&&(Math.random()<.6||!f.length)){for(let g=0;g<50;g++){const x=genQ(c);if(!S.used[H(x.q)]){S.used[H(x.q)]=1;return x}}return genQ(c)}
@@ -403,7 +406,7 @@ function buildSet(n){const cs=sh(Object.keys(CATS)),o=[];for(let i=0;i<n;i++)o.p
 async function startTie(){const g=ties();if(!g||HOST.tbRun)return;unlockVoice();const tsec=Math.max(8,Math.round(S.chal.secs*.6)),qs=buildSet(5),place=ord(g.start+1);
 HOST.tbRun={names:g.names,got:{},place};up();
 await say("We have a tie for "+place+" place between "+g.names.join(", ")+". A sudden-death tie-breaker will now decide.");
-g.names.forEach(n=>{const p=HOST.players[n];if(p.on&&p.conn&&p.conn.open)p.conn.send({t:"tie",qs,secs:tsec});else HOST.tbRun.got[n]=0});checkTb()}
+g.names.forEach(n=>{const p=HOST.players[n];if(p.on&&p.conn&&p.conn.open)p.conn.send({t:"tie",rid:HOST.rid,qs,secs:tsec});else HOST.tbRun.got[n]=0});checkTb()}
 function checkTb(){const t=HOST&&HOST.tbRun;if(!t||t.names.some(n=>t.got[n]===undefined)){up();return}
 t.names.forEach(n=>{const p=HOST.players[n];(p.tb=p.tb||[]).push(t.got[n])});HOST.tlog.push({place:t.place,names:t.names.slice(),scores:Object.assign({},t.got)});HOST.tbRun=null;snap();board();say("The tie-breaker is complete.");up()}
 async function announceWinners(){unlockVoice();const d=HOST&&HOST.started?snap():S.last;if(!d||!d.rows.length){alert("No results yet.");return}
@@ -438,7 +441,7 @@ const f=[{n:"[Content_Types].xml",d:X+'<Types xmlns="http://schemas.openxmlforma
 {n:"xl/styles.xml",d:X+'<styleSheet xmlns="'+NS+'"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="2"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/></cellXfs></styleSheet>'}];
 sh_.forEach((s,i)=>f.push({n:"xl/worksheets/sheet"+(i+1)+".xml",d:X+'<worksheet xmlns="'+NS+'"><cols>'+s.r[0].map((_,k)=>'<col min="'+(k+1)+'" max="'+(k+1)+'" width="'+(k==1&&i==0?28:16)+'" customWidth="1"/>').join("")+'</cols><sheetData>'+s.r.map((r,ri)=>'<row r="'+(ri+1)+'">'+r.map((v,ci)=>typeof v=="number"?'<c r="'+cl(ci)+(ri+1)+'"><v>'+v+'</v></c>':'<c r="'+cl(ci)+(ri+1)+'" t="inlineStr"'+(ri==0?' s="1"':'')+'><is><t>'+xe(v)+'</t></is></c>').join("")+'</row>').join("")+'</sheetData></worksheet>'}));
 return mkZip(f,"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")}
-function sheets(d){const o=[];if(d&&d.rows.length)o.push({n:"Final standings",r:[["Rank","Name","Score","Out of","Percent","Time (s)","Tie-break scores"]].concat(d.rows.map(r=>[r.rank,r.n,r.s,d.n,Math.round(100*r.s/d.n),r.sec,(r.tb||[]).join(" / ")]))});
+function sheets(d){const o=[];if(d&&d.rows.length)o.push({n:"Final standings",r:[["Rank","Name","Score","Out of","Percent","Time (s)","Tie-break scores"]].concat(d.rows.map(r=>[r.rank,r.n,r.s,d.n,Math.round(100*r.s/d.n),r.sec,r.dq?"DQ - left the app":(r.tb||[]).join(" / ")]))});
 if(S.results.length)o.push({n:"All results",r:[["Name","Score","Out of","Time (s)","Date"]].concat(S.results.map(x=>[x.name,x.score,x.n,x.sec,x.at]))});return o}
 const wr=(t,n)=>{const o=[];let c="";t.split(" ").forEach(w=>{if((c+" "+w).length>n){o.push(c);c=w}else c=c?c+" "+w:w});if(c)o.push(c);return o};
 const para=t=>wr(t,92).map(x=>({t:x,s:11}));
@@ -450,7 +453,7 @@ d.rows.forEach(r=>L.push({cells:[[40,String(r.rank)],[85,r.n.slice(0,40)],[320,r
 else{L.push({cells:[[40,"Name"],[300,"Score"],[370,"Time (s)"],[440,"Date"]],b:1,s:10});S.results.forEach(x=>L.push({cells:[[40,x.name.slice(0,45)],[300,x.score+" / "+x.n],[370,String(x.sec)],[440,x.at]],s:10}))}
 L.push({skip:14});para("Thank you to "+S.chal.partner+" and all our sponsors"+(S.sponsors.length?": "+S.sponsors.join(", "):"")+".").forEach(x=>L.push(x));return L}
 function subj(d){const a={};d.rows.forEach(r=>{if(r.by)for(const c in r.by){const b=a[c]=a[c]||[0,0];b[0]+=r.by[c][0];b[1]+=r.by[c][1]}});return Object.keys(a).filter(c=>a[c][1]).map(c=>({c:CATS[c]?CATS[c][0]:c,p:Math.round(100*a[c][0]/a[c][1])})).sort((x,y)=>y.p-x.p)}
-function repLines(d){const L=hdr("Official Contest Report",d),rows=d.rows,n=rows.length,sc=rows.map(r=>r.s),avg=n?sc.reduce((a,b)=>a+b,0)/n:0,pc=v=>Math.round(100*v/d.n),w=rows.filter(r=>r.rank==1),sj=subj(d),sp=d.spons||[],bl=t=>para("- "+t);
+function repLines(d){const L=hdr("Official Contest Report",d),rows=d.rows.filter(r=>!r.dq),dqs=d.rows.filter(r=>r.dq),n=rows.length,sc=rows.map(r=>r.s),avg=n?sc.reduce((a,b)=>a+b,0)/n:0,pc=v=>Math.round(100*v/d.n),w=rows.filter(r=>r.rank==1),sj=subj(d),sp=d.spons||[],bl=t=>para("- "+t);
 L.push(hh("Overview"));para("The Feed My Sheep Challenge was held on "+d.at+" in conjunction with "+d.partner+". "+n+" participant"+(n==1?"":"s")+" answered "+d.n+" questions on the Bible, academics, investigations, morals and ethics, security, safety and ICT, with "+d.secs+" seconds allowed for each question.").forEach(x=>L.push(x));
 L.push(hh("Outcome"));
 if(w.length==1)para("The champion is "+w[0].n+" with "+w[0].s+" out of "+d.n+" ("+pc(w[0].s)+"%)"+((w[0].tb||[]).length?", after winning a tie-breaker":"")+".").forEach(x=>L.push(x));
@@ -459,15 +462,16 @@ rows.filter(r=>r.rank>1&&r.rank<=3).forEach(r=>L.push({t:ord(r.rank)+" place: "+
 L.push({skip:6},hh("Highlights"));
 const hl=["Participants: "+n,"Highest score: "+(n?Math.max(...sc):0)+" / "+d.n+"; lowest: "+(n?Math.min(...sc):0)+" / "+d.n,"Average score: "+avg.toFixed(1)+" / "+d.n+" ("+pc(avg)+"%)","Scored 80% or more: "+rows.filter(r=>pc(r.s)>=80).length+" participant(s)"];
 if(sj.length>1)hl.push("Strongest subject: "+sj[0].c+" ("+sj[0].p+"% correct); needs most attention: "+sj[sj.length-1].c+" ("+sj[sj.length-1].p+"%)");
+if(dqs.length)hl.push("Disqualified for leaving the app: "+dqs.map(r=>r.n).join(", "));
 hl.forEach(t=>bl(t).forEach(x=>L.push(x)));
 if(d.ties&&d.ties.length){L.push({skip:6},hh("Tie-breakers"));d.ties.forEach(t=>bl("Tie for "+t.place+" place between "+t.names.join(" and ")+". Tie-breaker scores: "+t.names.map(x=>x+" "+t.scores[x]).join(", ")+".").forEach(x=>L.push(x)))}
 L.push({skip:6},hh("Final standings"),{cells:[[40,"Rank"],[85,"Name"],[330,"Score"],[395,"Percent"],[460,"Time (s)"]],b:1,s:10});
-rows.forEach(r=>L.push({cells:[[40,String(r.rank)],[85,r.n.slice(0,42)],[330,r.s+" / "+d.n],[395,pc(r.s)+"%"],[460,String(r.sec)]],s:10}));
+d.rows.forEach(r=>L.push({cells:r.dq?[[40,"DQ"],[85,r.n.slice(0,42)],[330,"Left the app during the challenge"]]:[[40,String(r.rank)],[85,r.n.slice(0,42)],[330,r.s+" / "+d.n],[395,pc(r.s)+"%"],[460,String(r.sec)]],s:10}));
 L.push({skip:8},hh("Thank you"));
 para("The organisers sincerely thank "+d.partner+" for their partnership and generous support of this challenge."+(sp.length?" We also thank our sponsors: "+sp.join(", ")+".":"")+" Thank you to every participant for your effort and honesty, and to all who helped make this event a success.").forEach(x=>L.push(x));
 para("Feed my sheep. (John 21:17) May the Lord bless and reward you all.").forEach(x=>L.push(x));
 L.push({skip:26},{t:"______________________________",s:11,x:40},{t:"Host / Administrator",s:10,x:40});return L}
-function repText(d){const m=["🥇","🥈","🥉"];let t="🏆 *FEED MY SHEEP CHALLENGE*\nResults – "+d.at+"\n\n";d.rows.slice(0,10).forEach(r=>{t+=(r.rank<=3?m[r.rank-1]:r.rank+".")+" "+r.n+" – "+r.s+"/"+d.n+((r.tb||[]).length?" (tie-break "+r.tb.join("/")+")":"")+"\n"});
+function repText(d){const m=["🥇","🥈","🥉"];let t="🏆 *FEED MY SHEEP CHALLENGE*\nResults – "+d.at+"\n\n";d.rows.filter(r=>!r.dq).slice(0,10).forEach(r=>{t+=(r.rank<=3?m[r.rank-1]:r.rank+".")+" "+r.n+" – "+r.s+"/"+d.n+((r.tb||[]).length?" (tie-break "+r.tb.join("/")+")":"")+"\n"});
 return t+"\nThank you to "+d.partner+(d.spons.length?" and our sponsors: "+d.spons.join(", "):"")+". God bless you all! 🙏"}
 function dl(b,name){const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{a.remove();URL.revokeObjectURL(a.href)},2000)}
 async function shr(b,name,text){try{const f=new File([b],name,{type:b.type});if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:name,text});return}}catch(e){if(e&&e.name=="AbortError")return}dl(b,name);alert("This device can’t share files directly, so the file was downloaded. Attach it in WhatsApp.")}
@@ -478,6 +482,17 @@ else{if(!(d&&d.rows.length)){alert("Run a challenge first.");return}b=mkPdf(repL
 mode=="share"?shr(b,name,"Feed My Sheep Challenge"):dl(b,name)}
 function waText(){if(HOST&&HOST.started)snap();const d=S.last;if(!(d&&d.rows.length)){alert("No results yet.");return}open("https://wa.me/?text="+encodeURIComponent(repText(d)),"_blank")}
 const exportCard=()=>`<div class="card"><h3>📤 Export &amp; share</h3><div class="meta">Results (PDF or Excel) and the special challenge report. Share opens WhatsApp or your phone’s share sheet; if files can’t be shared, they download instead.</div><div class="row" style="flex-wrap:wrap;margin-top:8px"><button class="sm" onclick="exp('pdf','share')">Share PDF</button><button class="sm" onclick="exp('xlsx','share')">Share Excel</button><button class="sm" onclick="exp('rep','share')">Share report</button><button class="sec sm" onclick="exp('pdf')">Download PDF</button><button class="sec sm" onclick="exp('xlsx')">Download Excel</button><button class="sec sm" onclick="exp('rep')">Download report</button><button class="sec sm" onclick="waText()">WhatsApp text</button></div></div>`;
+
+let WL=null;
+async function wake(){try{if(navigator.wakeLock&&!WL){WL=await navigator.wakeLock.request("screen");WL.addEventListener("release",()=>{WL=null})}}catch(e){}}
+function unwake(){try{if(WL)WL.release()}catch(e){}WL=null}
+function full(){try{const e=document.documentElement,f=e.requestFullscreen||e.webkitRequestFullscreen;if(f&&!document.fullscreenElement){const r=f.call(e);if(r&&r.catch)r.catch(()=>{})}}catch(e){}}
+function dq(n){const p=HOST&&HOST.players[n];if(!p||p.dq)return;p.dq=true;p.done=true;(HOST.left=HOST.left||[]).push(n);const t=HOST.tbRun;if(t&&t.names.includes(n)&&t.got[n]===undefined)t.got[n]=0;snap();board();up();if(t)checkTb()}
+function leftNow(){const r=S.run;if(!r||!r.live||r.done)return;r.left=true;r.done=true;r.end=Date.now();clearInterval(TI);sendHost({t:"left"});S.dqRid=r.rid;save();try{if(P.peer){const pr=P.peer;setTimeout(()=>{try{pr.destroy()}catch(e){}},400)}}catch(e){}}
+if(document.addEventListener){
+document.addEventListener("visibilitychange",()=>{if(document.hidden)leftNow();else{if(S.run||HOST||P.conn)wake();if(S.run&&S.run.left){tab="chal";render()}}});
+["contextmenu","copy","cut","selectstart","dragstart"].forEach(ev=>document.addEventListener(ev,e=>{const t=e.target&&(e.target.nodeType==3?e.target.parentElement:e.target);if(t&&t.closest&&t.closest(".nocopy"))e.preventDefault()}))}
+if(typeof addEventListener=="function")addEventListener("pagehide",leftNow);
 function quickGA(){form({date:`${year}-${String(month+1).padStart(2,"0")}-01`,status:"Planned",title:"Gathering of Angels",ministry:"Gathering of Angels"})}
 function form(x){const sm=tab=="sermons",st=sm?SS:MS;x=x||{date:`${year}-${String(month+1).padStart(2,"0")}-01`,status:st[0]};
 const f=(k,l,t="text")=>`<label>${l}</label><input id="f_${k}" type="${t}" value="${esc(x[k])}">`;
@@ -500,7 +515,7 @@ function restore(){try{const d=JSON.parse($("bk").value);if(d.sermons&&d.acts){S
 $("add").onclick=()=>tab=="people"?pform():form();$("q").oninput=render;
 $("yr").onchange=e=>{year=+e.target.value;render()};
 const hm=/^#ch([0-9]+)$/.exec(location.hash);if(hm){S.chal.secs=Math.min(300,Math.max(5,+hm[1]));save()}
-if(S.run&&!S.run.done){const r=S.run;r.ans.push(-1);r.i++;if(r.i>=r.qs.length)fin(r);else r.q0=Date.now();save()}
+if(S.run&&!S.run.done){const r=S.run;if(r.live){r.left=true;r.done=true;r.end=Date.now();S.dqRid=r.rid;save()}else{r.ans.push(-1);r.i++;if(r.i>=r.qs.length)fin(r);else r.q0=Date.now();save()}}
 if(S.run)tab="chal";
 addEventListener("load",()=>{if(S.run&&S.run.live&&!S.run.solo&&!S.run.done)joinLive(true)});
 render();
