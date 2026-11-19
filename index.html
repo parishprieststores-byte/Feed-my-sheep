@@ -1,103 +1,52 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
-<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#7a4b1e" id="tc"><meta name="color-scheme" content="light dark"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Feed My Sheep"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" href="icon.svg" type="image/svg+xml"><script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js" defer></script><title>Feed My Sheep – Sermons & Ministry Planner</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#7a4b1e"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Feed My Sheep"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" href="icon.svg" type="image/svg+xml"><script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js" defer></script><title>Feed My Sheep – Sermons & Ministry Planner</title>
 <style>
-/* Feed My Sheep design system v2: leather brown + gold on parchment (light) / warm dark brown (dark). Type: Georgia headings, system UI body. */
-:root{--bg:#fbf7ef;--card:#fffdf9;--ink:#2a2116;--mute:#6b5f4c;--acc:#7a4b1e;--acc2:#efe2c8;--gold:#c98f3a;--ok:#2f6f3e;--err:#b3392c;--line:#e6dcc6;--shadow:0 1px 2px rgba(60,36,10,.08),0 6px 16px rgba(60,36,10,.07);--nav:64px;color-scheme:light}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15110b;--card:#211b13;--ink:#f3ead9;--mute:#b4a78f;--acc:#e6b072;--acc2:#33291b;--gold:#f0c987;--ok:#7fd199;--err:#ff8f80;--line:#3a2f21;--shadow:0 1px 2px rgba(0,0,0,.4),0 6px 16px rgba(0,0,0,.35);color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#15110b;--card:#211b13;--ink:#f3ead9;--mute:#b4a78f;--acc:#e6b072;--acc2:#33291b;--gold:#f0c987;--ok:#7fd199;--err:#ff8f80;--line:#3a2f21;--shadow:0 1px 2px rgba(0,0,0,.4),0 6px 16px rgba(0,0,0,.35);color-scheme:dark}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{background:var(--bg);scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
-body{margin:0 auto;max-width:720px;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:calc(env(safe-area-inset-top,0px) + 4px) 14px calc(var(--nav) + env(safe-area-inset-bottom,0px) + 100px)}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.skip{position:absolute;left:-999px;top:8px;background:var(--acc);color:var(--bg);padding:10px 14px;border-radius:10px;z-index:99}.skip:focus{left:8px}
-.top{display:flex;align-items:center;gap:12px;padding:14px 0 10px}.brand{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
-.logo{width:46px;height:46px;border-radius:13px;box-shadow:var(--shadow);flex:none}
-h1{font:700 22px/1.15 Georgia,"Times New Roman",serif;color:var(--acc);margin:0}.verse{color:var(--mute);font:italic 13px Georgia,serif;margin-top:2px}
-.yrw{width:96px;flex:none}
-h2,h3,.ttl{font-family:Georgia,"Times New Roman",serif}
-.card h2{color:var(--acc);font-size:20px}
-.row{display:flex;gap:8px;align-items:center}.row.end{justify-content:flex-end;margin-top:16px}
-select,input,textarea{width:100%;min-height:46px;padding:10px 12px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);font:inherit}
-textarea{min-height:88px;resize:vertical}
-select{appearance:auto}
-:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
-label{display:block;font-size:13px;font-weight:600;color:var(--mute);margin:12px 0 5px}
-input[type=checkbox]{width:20px;min-height:20px;height:20px;margin-right:10px;accent-color:var(--acc);vertical-align:-4px}
-button{font:inherit;font-weight:600;min-height:46px;padding:10px 18px;border:0;border-radius:12px;background:var(--acc);color:var(--bg);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .12s,opacity .15s,background .15s}
-button:active{transform:scale(.97)}button:disabled{opacity:.5;cursor:not-allowed}
-button.sec{background:var(--acc2);color:var(--ink)}button.sm{min-height:38px;padding:6px 13px;font-size:14px;border-radius:10px}
-button.danger{background:var(--err);color:var(--bg)}
-.big{font-size:18px;min-height:56px;width:100%;margin-top:8px}
-.ic{display:inline-flex;width:1.2em;height:1.2em;vertical-align:-.22em;flex:none}
-.ic svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-.ic.dot{color:var(--ok)}.ic.alert,.ic.ban{color:var(--err)}.ic.check{color:var(--ok)}.ic.star{color:var(--gold)}
-.toast .ic,button .ic,.bnav .ic{color:inherit}
-.seg{display:flex;gap:6px;overflow-x:auto;padding:4px 0 10px;scrollbar-width:none}.seg::-webkit-scrollbar{display:none}
-.seg button{flex:none;min-height:40px;padding:8px 16px;border-radius:99px;background:var(--acc2);color:var(--ink)}
-.seg button.on{background:var(--acc);color:var(--bg)}
-.months{display:flex;gap:6px;overflow-x:auto;padding:2px 0 10px;scrollbar-width:none}.months::-webkit-scrollbar{display:none}
-.months button{flex:none;min-height:36px;padding:6px 13px;border-radius:99px;background:var(--acc2);color:var(--ink);font-size:14px}
+:root{--bg:#faf6ee;--card:#fff;--ink:#2b2418;--mute:#7a6f5d;--acc:#7a4b1e;--acc2:#e8d9bf;--ok:#2f7d4f;--line:#e5dcc8;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17130e;--card:#221c14;--ink:#f1e9da;--mute:#a89b84;--acc:#e0a96a;--acc2:#3a2f20;--ok:#6fd39a;--line:#3a3023;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#17130e;--card:#221c14;--ink:#f1e9da;--mute:#a89b84;--acc:#e0a96a;--acc2:#3a2f20;--ok:#6fd39a;--line:#3a3023;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 Georgia,"Times New Roman",serif;max-width:720px;margin:auto;padding:0 14px 90px}
+header{padding:18px 0 8px}h1{margin:0;font-size:26px;color:var(--acc)}
+.verse{color:var(--mute);font-style:italic;font-size:14px;margin-top:2px}
+.row{display:flex;gap:8px;align-items:center}
+select,input,textarea,button{font:inherit;color:var(--ink)}
+select,input,textarea{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card)}
+button{border:0;border-radius:10px;padding:9px 14px;background:var(--acc);color:var(--bg);cursor:pointer}
+button.sec{background:var(--acc2);color:var(--ink)}button.sm{padding:5px 10px;font-size:13px}
+.months{display:flex;gap:6px;overflow-x:auto;padding:10px 0}
+.months button{background:var(--acc2);color:var(--ink);white-space:nowrap;padding:7px 12px}
 .months button.on{background:var(--acc);color:var(--bg)}
-.searchw{position:relative;margin-bottom:12px}.searchw .ic{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--mute)}.searchw input{padding-left:44px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:var(--shadow)}
-.card h3{margin:0 0 4px;font-size:18px}.meta{color:var(--mute);font-size:13.5px}
-.hrow{display:flex;align-items:center;justify-content:space-between;gap:8px}.hrow h3,.hrow h2{margin:0}
-.hint{min-height:32px;width:32px;padding:0;border-radius:99px;background:var(--acc2);color:var(--ink);flex:none}.hint .ic{width:18px;height:18px}
-.hintp{background:var(--acc2);color:var(--ink);border-radius:12px;padding:10px 12px;font-size:14px;margin:8px 0}.hintp[hidden]{display:none}
-.warn{display:flex;gap:8px;align-items:flex-start;margin:12px 0;padding:10px 12px;border-radius:12px;background:var(--acc2);font-size:14px}.warn .ic{flex:none;margin-top:2px}
-.tag{display:inline-flex;align-items:center;gap:4px;background:var(--acc2);border-radius:99px;padding:2px 10px;font-size:12.5px;margin:0 4px 4px 0}
-.done h3{text-decoration:line-through;opacity:.6}.ok{color:var(--ok)}.due{color:var(--err);font-weight:700}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}.grid .card{cursor:pointer;margin:0}.grid .card:active{transform:scale(.98)}
-.empty{text-align:center;color:var(--mute);padding:36px 12px}.empty>.ic:first-child{width:40px;height:40px;display:flex;margin:0 auto 10px;color:var(--gold)}
-details.card summary{cursor:pointer;font:700 17px Georgia,serif}details ul{margin:8px 0 8px 18px;padding:0}details li{margin-bottom:4px}
-.fab{position:fixed;right:16px;bottom:calc(var(--nav) + env(safe-area-inset-bottom,0px) + 14px);z-index:7;border-radius:99px;min-height:54px;padding:0 22px;box-shadow:0 8px 20px rgba(60,36,10,.3)}
-.bnav{position:fixed;left:0;right:0;bottom:0;z-index:8;display:flex;justify-content:center;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
-.bnav button{flex:1;max-width:144px;min-height:var(--nav);flex-direction:column;gap:3px;background:none;color:var(--mute);font-size:11.5px;border-radius:0;padding:8px 2px;position:relative}
-.bnav button.on{color:var(--acc)}.bnav button.on::before{content:"";position:absolute;top:0;left:28%;right:28%;height:3px;border-radius:0 0 3px 3px;background:var(--acc)}
-.bnav .ic{width:24px;height:24px}
-.modal{position:fixed;inset:0;z-index:20;display:none;align-items:flex-end;justify-content:center;background:rgba(20,12,4,.55)}.modal.show{display:flex}
-#dlgm{z-index:30}
-.sheet{background:var(--bg);width:100%;max-width:720px;max-height:90vh;overflow:auto;border-radius:22px 22px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px));animation:up .22s ease-out}
-.modal.center{align-items:center;padding:16px}.modal.center .sheet{border-radius:20px;max-width:420px;animation:pop .16s ease-out;padding-bottom:18px}
-.sheet h2{font:700 20px Georgia,serif;color:var(--acc);margin:0 0 8px}.sheet p{margin:6px 0;color:var(--mute)}
-@keyframes up{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}@keyframes pop{from{transform:scale(.96);opacity:0}to{transform:none;opacity:1}}
-#toasts{position:fixed;left:0;right:0;bottom:calc(var(--nav) + env(safe-area-inset-bottom,0px) + 80px);z-index:40;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none;padding:0 14px}
-.toast{pointer-events:auto;display:flex;gap:10px;align-items:center;background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:14px;box-shadow:var(--shadow);max-width:520px;font-size:14.5px;animation:up .2s ease-out}
-.toast.err{background:var(--err);color:var(--bg)}.toast.ok{background:var(--ok);color:var(--bg)}
-.opt{display:block;width:100%;text-align:left;margin:10px 0;background:var(--card);color:var(--ink);border:1.5px solid var(--line);padding:14px 16px;font-size:16.5px;min-height:56px;justify-content:flex-start}
-.opt.sel{background:var(--acc);color:var(--bg);border-color:var(--acc)}
-.track{height:10px;background:var(--acc2);border-radius:9px;overflow:hidden}.fill{height:100%;background:var(--acc);transition:background .2s}.fill.low{background:var(--err)}
-.hl{background:var(--acc);color:var(--bg)}
-.bw{margin:10px 0}.bw.u{text-align:right}.bub{display:inline-block;max-width:92%;padding:10px 14px;border-radius:18px;text-align:left}
-.bub.u{background:var(--acc);color:var(--bg);border-bottom-right-radius:6px;white-space:pre-wrap}.bub.m{background:var(--acc2);color:var(--ink);border-bottom-left-radius:6px;margin-bottom:4px}
-.composer{display:flex;gap:8px;align-items:flex-end;position:sticky;bottom:calc(var(--nav) + env(safe-area-inset-bottom,0px) + 8px);background:var(--bg);padding:8px 0}.composer textarea{min-height:52px;max-height:140px}.composer button{min-height:52px;width:52px;padding:0}
+.tabs{display:flex;border-bottom:1px solid var(--line);margin-bottom:12px}
+.tabs button{flex:1;background:none;color:var(--mute);border-radius:0;padding:10px 0}
+.tabs button.on{color:var(--acc);border-bottom:3px solid var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px}
+.card h3{margin:0 0 2px;font-size:17px}.meta{color:var(--mute);font-size:13px}
+.tag{display:inline-block;background:var(--acc2);border-radius:99px;padding:1px 9px;font-size:12px;margin-right:4px}
+.done h3{text-decoration:line-through;opacity:.6}.ok{color:var(--ok)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.grid .card{cursor:pointer;margin:0}.empty{text-align:center;color:var(--mute);padding:30px 0}
+.fab{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));border-radius:99px;padding:14px 20px;box-shadow:0 4px 14px #0004}
+.modal{position:fixed;inset:0;background:#0007;display:none;align-items:flex-end;justify-content:center;z-index:5}
+.modal.show{display:flex}.sheet{background:var(--bg);width:100%;max-width:720px;max-height:92%;overflow:auto;border-radius:18px 18px 0 0;padding:16px}
+label{display:block;font-size:13px;color:var(--mute);margin:10px 0 3px}
+.tabs{overflow-x:auto}.tabs button{flex:none;padding:10px 13px;white-space:nowrap}details.card summary{cursor:pointer;font-weight:bold;font-size:17px}details ul{margin:8px 0 8px 18px;padding:0}details li{margin-bottom:4px}.opt{display:block;width:100%;text-align:left;margin:8px 0;background:var(--card);color:var(--ink);border:1px solid var(--line);padding:12px 14px;font-size:16px}.opt.sel{background:var(--acc);color:var(--bg)}.track{height:8px;background:var(--acc2);border-radius:9px;overflow:hidden}.fill{height:100%;background:var(--acc)}input[type=checkbox]{width:auto;margin-right:8px}.big{font-size:19px;padding:16px;width:100%;margin-top:8px}.hl{background:var(--acc);color:var(--bg)}.due{color:#c0392b;font-weight:bold}
 .nocopy,.nocopy *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 </style></head><body>
-<a class="skip" href="#list">Skip to content</a>
-<header class="top"><div class="brand"><img src="icon.svg" alt="" class="logo"><div><h1>Feed My Sheep</h1><div class="verse">“Feed my sheep.” — John 21:17</div></div></div><div class="yrw"><label class="sr" for="yr">Year</label><select id="yr"></select></div></header>
-<nav class="seg" id="tabs" aria-label="Section"></nav>
-<div class="months" id="months" role="group" aria-label="Month"></div>
-<div class="searchw" id="qw"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></span><label class="sr" for="q">Search</label><input id="q" type="search" placeholder="Search"></div>
-<main id="main"><div class="card" id="spc" style="display:none"></div>
+<header>
+<div class="row"><div style="flex:1"><h1><img src="icon.svg" alt="" style="height:38px;width:38px;vertical-align:-8px;border-radius:9px;margin-right:8px">Feed My Sheep</h1><div class="verse">“Feed my sheep.” — John 21:17</div></div>
+<select id="yr" style="width:90px"></select></div>
+</header>
+<div class="months" id="months"></div>
+<div class="tabs" id="tabs"></div>
+<input id="q" placeholder="Search title, scripture, notes…" style="margin-bottom:12px">
+<div class="card" id="spc" style="display:none"><h3>✨ Gathering of Angels</h3><div class="meta">Special service / occasional celebration. Add it here, or plan other special occasions.</div><button class="sm" style="margin-top:8px" onclick="quickGA()">＋ Add Gathering of Angels</button></div>
 <div id="list"></div>
-<div id="ideas"></div></main>
-<button class="fab" id="add" aria-label="Add new"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>Add</button>
-<nav class="bnav" id="bnav" aria-label="Main"></nav>
-<div class="modal" id="modal" role="dialog" aria-modal="true" aria-hidden="true"><div class="sheet" id="sheet" tabindex="-1"></div></div>
-<div class="modal center" id="dlgm" role="alertdialog" aria-modal="true" aria-hidden="true"><div class="sheet" tabindex="-1"></div></div>
-<div id="toasts" aria-live="polite"></div>
+<div id="ideas"></div>
+<button class="fab" id="add">＋ Add</button>
+<div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
 <script>
-/* PROJECT NOTE (Feed My Sheep v2.0)
- Architecture: single-file PWA (index.html + sw.js + manifest + icons), data in localStorage ("fms"), live challenge via PeerJS (CDN, loaded at runtime).
- Decisions: bottom navigation with 5 groups (Plan, Flock, Challenge, Assistant, More) + section pills; custom dialogs/toasts replace native alert/confirm/prompt;
-   History API layers so the system back button closes dialogs and steps back through screens; live challenge blocks back navigation.
-   Icons: inline SVG set (IC / ic()). Legacy text emojis in older templates are converted to SVG at display time by iconify(); new code uses ic() directly.
- Milestones: v1.x features (planner, people, counsel, care, connect, challenge, assistant, BrainQuest). v2.0 = UI/UX polish to the Development Doctrine.
- Known issues: PeerJS is not precached (live mode needs internet anyway); legacy emoji markers remain in source strings (cleanup candidate).
- Outstanding: real-device checks (voice, wake lock, share sheet, cross-device live play) are untested here. */
 const M=["January","February","March","April","May","June","July","August","September","October","November","December"];
 const MIN=["Worship","Prayer","Youth","Children","Women","Men","Outreach","Counseling","Visitation","Choir/Music","Bible Study","Other"];
 const OCC=["Gathering of Angels","Easter","Christmas","Harvest/Thanksgiving","Watchnight/Crossover","Anniversary","Convention/Revival","Wedding/Dedication","Other"];
@@ -114,32 +63,26 @@ const esc=s=>(s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"
 const mOf=d=>d?new Date(d+"T00:00").getMonth():-1,yOf=d=>d?new Date(d+"T00:00").getFullYear():-1;
 function fmt(d){return d?new Date(d+"T00:00").toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"}):"No date"}
 function head(){
-const g=grpOf(tab)||GROUPS[0];lastLeaf[g.id]=tab;
 $("yr").innerHTML=[year-1,year,year+1,year+2].map(y=>`<option ${y==year?"selected":""}>${y}</option>`).join("");
-$("yr").parentElement.style.display=g.id=="plan"?"":"none";
-$("months").innerHTML=M.map((m,i)=>`<button type="button" class="${i==month?"on":""}" aria-pressed="${i==month}" onclick="month=${i};render()">${m.slice(0,3)}</button>`).join("");
-$("tabs").innerHTML=g.leaves.length>1?g.leaves.map(([k,v])=>`<button type="button" class="${tab==k?"on":""}"${tab==k?' aria-current="page"':""} onclick="navTo('${k}')">${v}</button>`).join(""):"";
-$("tabs").style.display=g.leaves.length>1?"":"none";
-$("bnav").innerHTML=GROUPS.map(x=>`<button type="button" class="${x.id==g.id?"on":""}"${x.id==g.id?' aria-current="page"':""} onclick="goGroup('${x.id}')">${ic(x.icon)}<span>${x.label}</span></button>`).join("");
-const a=document.querySelector(".seg .on");if(a&&a.scrollIntoView)a.scrollIntoView({inline:"center",block:"nearest"});
-$("add").style.display=["sermons","acts","special","people"].includes(tab)?"":"none";
-$("qw").style.display=["sermons","acts","special","people","counsel","care"].includes(tab)?"":"none";
-$("months").style.display=["sermons","acts","special"].includes(tab)?"":"none";
-$("spc").style.display=tab=="special"?"":"none";
-if(tab=="special")$("spc").innerHTML=hhead(ic("sparkles")+" Gathering of Angels","Special service or occasional celebration. Add it here, or plan other special occasions.")+`<button class="sm" style="margin-top:10px" onclick="quickGA()">${ic("plus")} Add Gathering of Angels</button>`;
-$("ideas").innerHTML=tab=="special"?ideasHTML():""}
+$("months").innerHTML=M.map((m,i)=>`<button class="${tab!="year"&&i==month?"on":""}" onclick="month=${i};tab=tab=='year'?'sermons':tab;render()">${m.slice(0,3)}</button>`).join("");
+$("tabs").innerHTML=[["sermons","Sermons"],["bq","BrainQuest"],["acts","Ministry"],["special","Special"],["people","People"],["counsel","Counsel"],["care","Care"],["comm","Connect"],["ai","Assistant"],["chal","Challenge"],["year","Year"]].map(([k,v])=>`<button class="${tab==k?"on":""}" onclick="tab='${k}';render()">${v}</button>`).join("");
+{const a=document.querySelector&&document.querySelector(".tabs .on");if(a&&a.scrollIntoView)a.scrollIntoView({inline:"center",block:"nearest"})}$("add").style.display=["sermons","acts","special","people"].includes(tab)?"":"none";$("q").style.display=["comm","year","chal","ai","bq"].includes(tab)?"none":"";$("months").style.display=["sermons","acts","special"].includes(tab)?"":"none";$("spc").style.display=tab=="special"?"":"none";$("ideas").innerHTML=tab=="special"?ideasHTML():""}
 function inMonth(x){return yOf(x.date)==year&&mOf(x.date)==month}
 function match(x){const q=$("q").value.toLowerCase();return !q||JSON.stringify(x).toLowerCase().includes(q)}
-function render(){if(S.run&&!S.run.done)tab="chal";navSync();head();const L=$("list");if(["people","counsel","care","comm","chal","ai","bq","more"].includes(tab))return renderNew(L);
+function render(){if(S.run&&!S.run.done)tab="chal";head();const L=$("list");if(["people","counsel","care","comm","chal","ai","bq"].includes(tab))return renderNew(L);
 if(tab=="year"){L.innerHTML=`<div class="grid">`+M.map((m,i)=>{const s=S.sermons.filter(x=>yOf(x.date)==year&&mOf(x.date)==i),a=S.acts.filter(x=>yOf(x.date)==year&&mOf(x.date)==i),p=S.special.filter(x=>yOf(x.date)==year&&mOf(x.date)==i);
-return `<div class="card" onclick="month=${i};tab='sermons';render()"><h3>${m}</h3><div class="meta">${s.length} sermon${s.length==1?"":"s"}<br>${a.length} activit${a.length==1?"y":"ies"}<br>${p.length} special</div><div class="meta ok">${s.filter(x=>x.status=="Preached").length+a.filter(x=>x.status=="Done").length+p.filter(x=>x.status=="Done").length} completed</div></div>`}).join("")+`</div>`;return}
+return `<div class="card" onclick="month=${i};tab='sermons';render()"><h3>${m}</h3><div class="meta">${s.length} sermon${s.length==1?"":"s"}<br>${a.length} activit${a.length==1?"y":"ies"}<br>${p.length} special</div><div class="meta ok">${s.filter(x=>x.status=="Preached").length+a.filter(x=>x.status=="Done").length+p.filter(x=>x.status=="Done").length} completed</div></div>`}).join("")+`</div>
+<div class="card" style="margin-top:14px"><h3>Backup</h3><div class="meta">Copy this text to keep your data safe, or paste a backup and tap Restore.</div><textarea id="bk" rows="4"></textarea><div class="row" style="margin-top:8px"><button class="sec sm" onclick="$('bk').value=JSON.stringify(S,(k,v)=>k=='key'?undefined:v);$('bk').select();try{document.execCommand('copy')}catch(e){}">Copy backup</button><button class="sm" onclick="restore()">Restore</button></div></div><div class="card"><h3>Install & offline</h3><div class="meta">iPhone: Safari → Share → Add to Home Screen.<br>Android: Chrome menu → Install app.<br>Works offline after the first open.</div></div>`;return}
 const items=arr().filter(inMonth).filter(match).sort((a,b)=>a.date<b.date?-1:1);
-if(!items.length){L.innerHTML=`<div class="empty">${ic("calendar")}Nothing planned for ${M[month]} ${year} yet.<br>Use the Add button to begin.</div>`;return}
+if(!items.length){L.innerHTML=`<div class="empty">Nothing planned for ${M[month]} ${year} yet.<br>Tap ＋ Add to begin.</div>`;return}
 L.innerHTML=items.map(x=>{const fin=x.status=="Preached"||x.status=="Done";
 return `<div class="card ${fin?"done":""}"><h3>${x.ministry=="Gathering of Angels"?"✨ ":""}${esc(x.title)}</h3><div class="meta">${fmt(x.date)}${x.time?" · "+esc(x.time):""}${x.speaker?" · "+esc(x.speaker):""}</div>
 <div style="margin:6px 0">${x.scripture?`<span class="tag">📖 ${esc(x.scripture)}</span>`:""}${x.series?`<span class="tag">${esc(x.series)}</span>`:""}${x.ministry?`<span class="tag">${esc(x.ministry)}</span>`:""}<span class="tag ${fin?"ok":""}">${esc(x.status)}</span></div>
-${x.location?`<div class="meta">📍 ${esc(x.location)}</div>`:""}${x.notes?`<div data-noicon="1" style="white-space:pre-wrap;font-size:15px;margin-top:6px">${esc(x.notes)}</div>`:""}
+${x.location?`<div class="meta">📍 ${esc(x.location)}</div>`:""}${x.notes?`<div style="white-space:pre-wrap;font-size:15px;margin-top:6px">${esc(x.notes)}</div>`:""}
 <div class="row" style="margin-top:8px"><button class="sec sm" onclick="edit('${x.id}')">Edit</button><button class="sec sm" onclick="adv('${x.id}')">${fin?"Reopen":"Next status ›"}</button><button class="sec sm" onclick="del('${x.id}')">Delete</button></div></div>`}).join("")}
+function open_(h){$("sheet").innerHTML=h;$("modal").classList.add("show")}
+function close_(){$("modal").classList.remove("show")}
+$("modal").onclick=e=>{if(e.target.id=="modal")close_()};
 const IDEAS={
 "Gathering of Angels":[
 {t:"Innumerable Angels, One Church",s:"Hebrews 12:22-24",n:"1) Heaven is not distant: we have come to the city of God. 2) The church and the angels worship together. 3) Jesus, the mediator, is the centre of the gathering."},
@@ -223,19 +166,19 @@ const TPL=[
 const PST=["Follow up","Discussed","Done"];
 let C={pid:"",name:"",phone:"",tpl:0,date:"",text:""};
 const today=()=>new Date().toISOString().slice(0,10);
-function renderNew(L){if(tab=="people")return rPeople(L);if(tab=="comm")return rComm(L);if(tab=="chal")return rChal(L);if(tab=="ai")return rAI(L);if(tab=="bq")return rBQ(L);if(tab=="more")return rMore(L);rLib(L)}
+function renderNew(L){if(tab=="people")return rPeople(L);if(tab=="comm")return rComm(L);if(tab=="chal")return rChal(L);if(tab=="ai")return rAI(L);if(tab=="bq")return rBQ(L);rLib(L)}
 function rLib(L){const q=$("q").value.toLowerCase(),c=tab=="counsel";
 let h=c?`<div class="card"><h3>🕊️ Counselling guide</h3><div class="meta">Listen first, pray, keep confidences, and refer to a doctor, professional counsellor or emergency services when needed. These are starting points, not a replacement for professional help.</div></div>`:`<div class="card"><h3>✅ Visit checklist</h3><div class="meta"><b>Before:</b> pray, call ahead, prepare a short verse.<br><b>During:</b> greet warmly, listen more than you talk, keep it short, pray, never gossip.<br><b>After:</b> record a note under People and set a follow-up date.</div></div>`;
 const A=(c?COUNSEL:CARE).filter(x=>!q||JSON.stringify(x).toLowerCase().includes(q));
 h+=A.map(x=>c?`<details class="card"><summary>${x[0]}</summary><ul>${x[1].map(s=>`<li>${s}</li>`).join("")}</ul><div class="meta">📖 ${x[2]}</div></details>`
 :`<details class="card"><summary>${x[0]} ${x[1]}</summary><div class="meta" style="margin-top:8px"><b>How to care</b></div><ul>${x[2].map(s=>`<li>${s}</li>`).join("")}</ul><div class="meta"><b>🎁 Gift ideas</b></div><div style="margin:4px 0">${x[3].map(s=>`<span class="tag">${s}</span>`).join("")}</div><div class="meta">📖 ${x[4]}</div><button class="sm" style="margin-top:8px" onclick="planVisit(${CARE.indexOf(x)})">Plan a visit</button></details>`).join("");
-L.innerHTML=h||`<div class="empty">${ic("search")}No match.</div>`}
+L.innerHTML=h||`<div class="empty">No match.</div>`}
 function planVisit(i){const c=CARE[i];tab="acts";render();form({date:`${year}-${String(month+1).padStart(2,"0")}-01`,status:"Planned",title:"Visitation: "+c[1],ministry:"Visitation",notes:"Gift ideas: "+c[3].join(", ")+"\nScripture: "+c[4]})}
 function rPeople(L){const q=$("q").value.toLowerCase(),t=today();
 const A=S.people.filter(x=>!q||JSON.stringify(x).toLowerCase().includes(q)).sort((a,b)=>(b.date||"")<(a.date||"")?-1:1);
-if(!A.length){L.innerHTML=`<div class="empty">${ic("users")}No records yet.<br>Use the Add button to record a person you preached to or ministered to.</div>`;return}
+if(!A.length){L.innerHTML=`<div class="empty">No records yet.<br>Tap ＋ Add to record a person you preached to or ministered to.</div>`;return}
 L.innerHTML=A.map(x=>{const due=x.follow&&x.follow<=t&&x.status!="Done";
-return `<div class="card"><h3>${esc(x.name)}</h3><div class="meta">${fmt(x.date)}${x.place?" · "+esc(x.place):""}${x.phone?" · "+esc(x.phone):""}</div><div style="margin:6px 0">${x.topic?`<span class="tag">🎤 ${esc(x.topic)}</span>`:""}${x.scripture?`<span class="tag">📖 ${esc(x.scripture)}</span>`:""}<span class="tag">${esc(x.status)}</span>${x.follow?`<span class="tag ${due?"due":""}">⏰ ${fmt(x.follow)}${due?" (due)":""}</span>`:""}</div>${x.notes?`<div data-noicon="1" style="white-space:pre-wrap;font-size:15px">${esc(x.notes)}</div>`:""}
+return `<div class="card"><h3>${esc(x.name)}</h3><div class="meta">${fmt(x.date)}${x.place?" · "+esc(x.place):""}${x.phone?" · "+esc(x.phone):""}</div><div style="margin:6px 0">${x.topic?`<span class="tag">🎤 ${esc(x.topic)}</span>`:""}${x.scripture?`<span class="tag">📖 ${esc(x.scripture)}</span>`:""}<span class="tag">${esc(x.status)}</span>${x.follow?`<span class="tag ${due?"due":""}">⏰ ${fmt(x.follow)}${due?" (due)":""}</span>`:""}</div>${x.notes?`<div style="white-space:pre-wrap;font-size:15px">${esc(x.notes)}</div>`:""}
 <div class="row" style="margin-top:8px;flex-wrap:wrap"><button class="sec sm" onclick="pform(S.people.find(p=>p.id=='${x.id}'))">Edit</button><button class="sec sm" onclick="pAdv('${x.id}')">Next status ›</button><button class="sec sm" onclick="tab='comm';cPick('${x.id}')">Message</button><button class="sec sm" onclick="pDel('${x.id}')">Delete</button></div></div>`}).join("")}
 function pform(x){x=x||{date:today(),status:PST[0]};
 const f=(k,l,t="text")=>`<label>${l}</label><input id="p_${k}" type="${t}" value="${esc(x[k])}">`;
@@ -246,7 +189,7 @@ if(!o.name){$("p_name").focus();return}
 if(id)Object.assign(S.people.find(x=>x.id==id),o);else{o.id=Date.now().toString(36);S.people.push(o)}
 save();close_();render()}
 function pAdv(id){const x=S.people.find(p=>p.id==id),i=PST.indexOf(x.status);x.status=PST[(i+1)%PST.length];save();render()}
-async function pDel(id){if(!await askC("Delete this record?","The record will be removed from this device.","Delete record","Keep",1))return;S.people=S.people.filter(x=>x.id!=id);save();render()}
+function pDel(id){if(!confirm("Delete this record?"))return;S.people=S.people.filter(x=>x.id!=id);save();render()}
 function gen(){C.text=TPL[C.tpl][1].split("{name}").join(C.name||"friend").split("{church}").join(S.cfg.church||"our church").split("{date}").join(C.date||"[date]")}
 function cg(){gen();$("c_text").value=C.text}
 function cPick(id){const p=S.people.find(x=>x.id==id);C.pid=id;if(p){C.name=p.name;C.phone=p.phone||""}gen();render()}
@@ -266,7 +209,7 @@ if(k=="wa")open(`https://wa.me/${d}?text=${m}`,"_blank");
 else if(k=="sms")location.href=`sms:${C.phone||""}?&body=${m}`;
 else if(k=="mail")location.href=`mailto:?subject=${encodeURIComponent(S.cfg.church||"Greetings")}&body=${m}`;
 else if(k=="call")location.href=`tel:${C.phone||""}`;
-else{try{navigator.clipboard.writeText(C.text)}catch(e){}$("c_text").select();try{document.execCommand("copy")}catch(e){}toast("Copied.")}}
+else{try{navigator.clipboard.writeText(C.text)}catch(e){}$("c_text").select();try{document.execCommand("copy")}catch(e){}alert("Copied.")}}
 
 const BK="Genesis,Exodus,Leviticus,Numbers,Deuteronomy,Joshua,Judges,Ruth,1 Samuel,2 Samuel,1 Kings,2 Kings,1 Chronicles,2 Chronicles,Ezra,Nehemiah,Esther,Job,Psalms,Proverbs,Ecclesiastes,Song of Solomon,Isaiah,Jeremiah,Lamentations,Ezekiel,Daniel,Hosea,Joel,Amos,Obadiah,Jonah,Micah,Nahum,Habakkuk,Zephaniah,Haggai,Zechariah,Malachi,Matthew,Mark,Luke,John,Acts,Romans,1 Corinthians,2 Corinthians,Galatians,Ephesians,Philippians,Colossians,1 Thessalonians,2 Thessalonians,1 Timothy,2 Timothy,Titus,Philemon,Hebrews,James,1 Peter,2 Peter,1 John,2 John,3 John,Jude,Revelation".split(",");
 const CATS={bible:["Bible","📖"],aca:["Academic","🎓"],inv:["Investigations","🔍"],eth:["Morals & Ethics","⚖️"],sec:["Security","🔐"],saf:["Safety","🦺"],ict:["ICT","💻"]};
@@ -312,24 +255,21 @@ while(got.length<need)got.push(genQ(c));
 got.forEach(x=>{S.used[H(x.q)]=1;seen.add(H(x.q));out.push(x)})}
 return sh(out)}
 let cv="gate",isAdmin=false,TI=null,lock=false;
-function cpy(t){try{navigator.clipboard.writeText(t)}catch(e){}const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy")}catch(e){}a.remove();toast("Copied.")}
+function cpy(t){try{navigator.clipboard.writeText(t)}catch(e){}const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy")}catch(e){}a.remove();alert("Copied.")}
 function rChal(L){const r=S.run;if(r&&!r.done)return showQ(L);if(r&&r.done)return showRes(L);
 if(cv=="host"&&isAdmin)return rHost(L);if(cv=="lobby")return rLobby(L);if(cv=="wait")return rWait(L);if(cv=="admin"&&isAdmin)return rAdmin(L);
-if(cv=="name"){L.innerHTML=`<div class="card"><h2 style="margin:0;color:var(--acc)">Ready?</h2><ul><li>50 mixed questions</li><li>${S.chal.secs} seconds per question</li><li>Once you choose an answer you cannot go back</li><li>Results appear automatically at the end</li></ul><label>Your name</label><input id="cn"><button style="margin-top:12px;width:100%" onclick="begin()">▶ Start</button></div>`;return}
+if(cv=="name"){L.innerHTML=`<div class="card"><h2 style="margin:0;color:var(--acc)">Ready?</h2><ul><li>50 mixed questions</li><li>${S.chal.secs} seconds per question</li><li>Once you choose an answer you cannot go back</li><li>Results appear automatically at the end</li></ul><label>Your name</label><input id="cn" placeholder="Full name"><button style="margin-top:12px;width:100%" onclick="begin()">▶ Start</button></div>`;return}
 if(cv=="alogin"||cv=="asetup"){const s=cv=="asetup";L.innerHTML=`<div class="card"><h3>🛡️ Admin ${s?"setup":"login"}</h3><div class="meta">${s?"Create an admin PIN (at least 4 characters). Keep it private.":"Enter the admin PIN."}</div><label>PIN</label><input id="ap1" type="password">${s?`<label>Repeat PIN</label><input id="ap2" type="password">`:""}<div class="row" style="margin-top:12px"><button class="sec" style="flex:1" onclick="cv='gate';render()">Back</button><button style="flex:1" onclick="${s?"admSetup()":"admLogin()"}">${s?"Create":"Enter"}</button></div></div>`;return}
-L.innerHTML=`<div class="card"><div class="hrow"><h2 class="ttl" style="margin:0">${ic("trophy")} Feed My Sheep Challenge</h2><button type="button" class="hint" aria-label="More information" aria-expanded="false">${ic("info")}</button></div><div class="hintp" hidden role="note">50 questions on Bible, academics, investigations, morals and ethics, security, safety and ICT. Get the challenge code from the host. Places are limited: once the host’s limit is reached, joining closes. Playing alone needs the host’s approval.</div>
-<label for="jc">Challenge code</label><input id="jc" type="tel" inputmode="numeric" autocomplete="off"><label for="cn">Your name</label><input id="cn" autocomplete="name">
-<div class="warn">${ic("alert")}<span>Leaving the app during a live challenge ends your attempt, with no re-entry. Turn on Do Not Disturb first.</span></div>
-<button class="big" onclick="joinLive()">Join live challenge</button><button class="sec big" onclick="joinLive(false,true)">${ic("user-check")} Request to play alone</button><button class="sec sm" style="margin-top:10px" onclick="sayHow()">${ic("volume")} How to play</button></div><div style="text-align:center"><button class="sm" onclick="admGo()">${ic("shield")} Host / Admin</button></div>`}
-function joinC(){if(H("j"+$("jc").value.trim())==S.chal.jh){cv="name";render()}else toast("Wrong code. Ask the admin for the correct challenge code.")}
+L.innerHTML=`<div class="card"><h2 style="margin:0;color:var(--acc)">🏆 Feed My Sheep Challenge</h2><div class="meta" style="margin:6px 0 10px">50 questions on Bible, academics, investigations, morals &amp; ethics, security, safety and ICT. Get the challenge code from the host. Places are limited: once the host’s limit is reached, joining closes.<br>Playing alone needs the host’s approval.<br>⚠️ Leaving the app during a live challenge ends your attempt, with no re-entry. Turn on Do Not Disturb first so calls and notifications do not interrupt you.</div><label>Challenge code</label><input id="jc" type="tel" inputmode="numeric" placeholder="Enter code"><label>Your name</label><input id="cn" placeholder="Full name"><button class="big" onclick="joinLive()">Join live challenge</button><button class="sec" style="width:100%;margin-top:8px" onclick="joinLive(false,true)">🙋 Request to play alone</button><button class="sec sm" style="margin-top:8px" onclick="sayHow()">🔊 How to play</button></div><div style="text-align:center"><button class="sm" onclick="admGo()">🛡️ Host / Admin</button></div>`}
+function joinC(){if(H("j"+$("jc").value.trim())==S.chal.jh){cv="name";render()}else alert("Wrong code. Ask the admin for the correct challenge code.")}
 function admGo(){cv=isAdmin?"admin":S.chal.ah?"alogin":"asetup";render()}
-function admLogin(){if(H("a"+$("ap1").value)==S.chal.ah){isAdmin=true;cv="admin";render()}else toast("Wrong PIN.")}
-function admSetup(){const a=$("ap1").value;if(a.length<4||a!=$("ap2").value){toast("PIN must be at least 4 characters and both entries must match.");return}S.chal.ah=H("a"+a);save();isAdmin=true;cv="admin";render()}
+function admLogin(){if(H("a"+$("ap1").value)==S.chal.ah){isAdmin=true;cv="admin";render()}else alert("Wrong PIN.")}
+function admSetup(){const a=$("ap1").value;if(a.length<4||a!=$("ap2").value){alert("PIN must be at least 4 characters and both entries must match.");return}S.chal.ah=H("a"+a);save();isAdmin=true;cv="admin";render()}
 function begin(){const n=$("cn").value.trim();if(!n){$("cn").focus();return}S.run={name:n,qs:buildQuiz(),i:0,ans:[],score:0,secs:S.chal.secs,q0:Date.now(),t0:Date.now(),done:false};lock=false;save();render()}
 function showQ(L){const r=S.run,q=r.qs[r.i],ct=CATS[q.c];
-L.innerHTML=`<div class="card nocopy"><div class="row"><b style="flex:1">Question ${r.i+1} of ${r.qs.length}</b><span class="tag">${ct[1]} ${ct[0]}</span></div><div class="track" style="margin:10px 0"><div class="fill" id="tb" style="width:100%"></div></div><div class="meta">${ic("clock")} <span id="tt"></span></div><h3 style="margin:12px 0;font-size:19px">${esc(q.q)}</h3>${q.o.map((o,k)=>`<button class="opt" onclick="pick(${k})">${"ABCD"[k]}. ${esc(o)}</button>`).join("")}</div>`;
+L.innerHTML=`<div class="card nocopy"><div class="row"><b style="flex:1">Question ${r.i+1} of ${r.qs.length}</b><span class="tag">${ct[1]} ${ct[0]}</span></div><div class="track" style="margin:10px 0"><div class="fill" id="tb" style="width:100%"></div></div><div class="meta" id="tt"></div><h3 style="margin:12px 0;font-size:19px">${esc(q.q)}</h3>${q.o.map((o,k)=>`<button class="opt" onclick="pick(${k})">${"ABCD"[k]}. ${esc(o)}</button>`).join("")}</div>`;
 clearInterval(TI);TI=setInterval(tick,200);tick()}
-function tick(){const r=S.run;if(!r||r.done||!$("tb")){clearInterval(TI);return}const rem=r.secs-(Date.now()-r.q0)/1000;if(rem<=0){pick(-1);return}$("tb").style.width=(100*rem/r.secs)+"%";$("tb").classList.toggle("low",rem<=5);$("tt").textContent=Math.ceil(rem)+" s left"}
+function tick(){const r=S.run;if(!r||r.done||!$("tb")){clearInterval(TI);return}const rem=r.secs-(Date.now()-r.q0)/1000;if(rem<=0){pick(-1);return}$("tb").style.width=(100*rem/r.secs)+"%";$("tt").textContent="⏱ "+Math.ceil(rem)+" s"}
 function pick(k){const r=S.run;if(lock||!r||r.done)return;lock=true;clearInterval(TI);
 if(k>=0){const b=document.querySelectorAll(".opt")[k];if(b)b.classList.add("sel")}
 setTimeout(()=>{r.ans.push(k);if(k==r.qs[r.i].a)r.score++;r.i++;if(r.i>=r.qs.length)fin(r);else r.q0=Date.now();if(r.live){if(r.tie){if(r.done)sendHost({t:"tdone",s:r.score,sec:Math.round((r.end-r.t0)/1000)})}else sendHost(r.done?{t:"done",s:r.score,n:r.qs.length,by:byOf(r),sec:Math.round((r.end-r.t0)/1000)}:{t:"prog",i:r.i,s:r.score})}save();lock=false;render()},k>=0?250:0)}
@@ -347,15 +287,14 @@ L.innerHTML=`<div class="card"><h3>🛡️ Admin panel</h3><div class="row" styl
 <div class="card"><h3>🎙️ Host the challenge</h3><div class="meta">Challenge code: <b>${curCode()}</b>. Open the lobby, let players join, then press Start.</div><button class="big" onclick="openHost()">🎙️ Open live lobby</button></div>
 <div class="card"><h3>🤝 Sponsors</h3><label>In conjunction with</label><input id="sp_p" value="${esc(S.chal.partner)}"><label>Sponsor names (one per line)</label><textarea id="sp_l" rows="5">${esc(S.sponsors.join("\n"))}</textarea><div class="row" style="margin-top:8px;flex-wrap:wrap"><button class="sm" onclick="saveSpons()">Save sponsors</button><button class="sec sm" onclick="announceSponsors()">🔊 Hear announcement</button><button class="sec sm" onclick="sayHow()">🔊 Hear how to play</button></div></div>
 <div class="card"><h3>👥 Participant limit</h3><label>Maximum participants (first come, first served)</label><input id="as_max" type="number" min="1" max="200" value="${S.chal.max||30}"><button class="sm" style="margin-top:8px" onclick="saveMax()">Save</button><div class="meta" style="margin-top:6px">Once this many people have joined, joining closes automatically.</div></div><div class="card"><h3>⏱ Time per question</h3><label>Seconds (5 to 300)</label><input id="as" type="number" min="5" max="300" value="${S.chal.secs}"><button class="sm" style="margin-top:8px" onclick="saveSecs()">Save</button><label>Participant link (carries your time setting)</label><input readonly value="${esc(link)}" onclick="this.select()"><button class="sec sm" style="margin-top:8px" onclick="cpy(this.previousElementSibling.value)">Copy link</button></div>
-<div class="card"><h3>🔑 Codes &amp; admin access</h3><div class="meta">Current code: <b>${curCode()}</b></div><label>New challenge code</label><input id="nc" type="tel"><button class="sm" style="margin-top:8px" onclick="setCode()">Change code</button><label>New admin PIN</label><input id="np" type="password"><button class="sm" style="margin-top:8px" onclick="setPin()">Change PIN</button>${hnote("Share admin access","To give someone admin rights, share your admin PIN with them. Change the PIN to take it back.")}</div>
-<div class="card"><h3>📚 Question bank</h3><div class="meta">${left}</div><button class="sec sm" style="margin-top:8px" onclick="S.used={};save();toast('Done. All questions are fresh again.')">Reset used-question memory</button></div>
+<div class="card"><h3>🔑 Codes &amp; admin access</h3><div class="meta">Current code: <b>${curCode()}</b></div><label>New challenge code</label><input id="nc" type="tel" placeholder="New code"><button class="sm" style="margin-top:8px" onclick="setCode()">Change code</button><label>New admin PIN</label><input id="np" type="password" placeholder="New PIN"><button class="sm" style="margin-top:8px" onclick="setPin()">Change PIN</button><div class="meta" style="margin-top:8px">To give someone admin rights, share your admin PIN with them. Change the PIN to take it back.</div></div>
+<div class="card"><h3>📚 Question bank</h3><div class="meta">${left}</div><button class="sec sm" style="margin-top:8px" onclick="S.used={};save();alert('Done. All questions are fresh again.')">Reset used-question memory</button></div>
 <div class="card"><h3>➕ Add your own question</h3><label>Subject</label><select id="nq_c">${Object.keys(CATS).map(c=>`<option value="${c}">${CATS[c][0]}</option>`).join("")}</select><label>Question</label><textarea id="nq_q" rows="2"></textarea><label>Correct answer</label><input id="nq_a"><label>Wrong answer 1</label><input id="nq_w0"><label>Wrong answer 2</label><input id="nq_w1"><label>Wrong answer 3</label><input id="nq_w2"><button class="sm" style="margin-top:8px" onclick="addQ()">Add question</button></div>
-${exportCard()}<div class="card"><h3>📊 Results on this device</h3>${R.length?R.map((x,i)=>`<div class="meta">${i+1}. <b>${esc(x.name)}</b> — ${x.score}/${x.n} · ${x.sec}s · ${x.at}</div>`).join(""):`<div class="meta">No results yet.</div>`}<div class="row" style="margin-top:8px"><button class="sec sm" onclick="cpy(S.results.slice().sort((a,b)=>b.score-a.score||a.sec-b.sec).map((x,i)=>(i+1)+'. '+x.name+' - '+x.score+'/'+x.n+' - '+x.sec+'s').join(String.fromCharCode(10)))">Copy list</button><button class="sec sm" onclick="clearRes()">Clear</button></div></div>`}
-async function clearRes(){if(!await askC("Clear all results?","All saved results on this device will be removed.","Clear results","Keep",1))return;S.results=[];save();render()}
-function saveSecs(){const v=Math.min(300,Math.max(5,+$("as").value||20));S.chal.secs=v;save();render();toast("Saved: "+v+" seconds per question.")}
-function setCode(){const v=$("nc").value.trim();if(v.length<4){toast("Use at least 4 characters.");return}S.chal.jh=H("j"+v);S.chal.code=v;save();$("nc").value="";toast("Challenge code changed.")}
-function setPin(){const v=$("np").value;if(v.length<4){toast("Use at least 4 characters.");return}S.chal.ah=H("a"+v);save();$("np").value="";toast("Admin PIN changed.")}
-function addQ(){const g=k=>$("nq_"+k).value.replace(/[|]/g," ").trim(),q=g("q"),a=g("a"),w=[g("w0"),g("w1"),g("w2")];if(!q||!a||w.some(x=>!x)){toast("Fill in the question and all four answers.");return}S.custom.push({c:$("nq_c").value,q,a,w});save();render();toast("Question added.")}
+${exportCard()}<div class="card"><h3>📊 Results on this device</h3>${R.length?R.map((x,i)=>`<div class="meta">${i+1}. <b>${esc(x.name)}</b> — ${x.score}/${x.n} · ${x.sec}s · ${x.at}</div>`).join(""):`<div class="meta">No results yet.</div>`}<div class="row" style="margin-top:8px"><button class="sec sm" onclick="cpy(S.results.slice().sort((a,b)=>b.score-a.score||a.sec-b.sec).map((x,i)=>(i+1)+'. '+x.name+' - '+x.score+'/'+x.n+' - '+x.sec+'s').join(String.fromCharCode(10)))">Copy list</button><button class="sec sm" onclick="if(confirm('Clear all results?')){S.results=[];save();render()}">Clear</button></div></div>`}
+function saveSecs(){const v=Math.min(300,Math.max(5,+$("as").value||20));S.chal.secs=v;save();render();alert("Saved: "+v+" seconds per question.")}
+function setCode(){const v=$("nc").value.trim();if(v.length<4){alert("Use at least 4 characters.");return}S.chal.jh=H("j"+v);S.chal.code=v;save();$("nc").value="";alert("Challenge code changed.")}
+function setPin(){const v=$("np").value;if(v.length<4){alert("Use at least 4 characters.");return}S.chal.ah=H("a"+v);save();$("np").value="";alert("Admin PIN changed.")}
+function addQ(){const g=k=>$("nq_"+k).value.replace(/[|]/g," ").trim(),q=g("q"),a=g("a"),w=[g("w0"),g("w1"),g("w2")];if(!q||!a||w.some(x=>!x)){alert("Fill in the question and all four answers.");return}S.custom.push({c:$("nq_c").value,q,a,w});save();render();alert("Question added.")}
 
 const SY=typeof speechSynthesis!="undefined"?speechSynthesis:null;let VOICE=true,HOST=null;
 let P={conn:null,peer:null,roster:[],cap:"",board:[],spons:null,late:false,name:"",code:""};
@@ -368,12 +307,12 @@ function bc(m){if(!HOST)return;Object.values(HOST.players).forEach(p=>{try{if(p.
 function say(t,spk){if(HOST){HOST.cap=t;if(HOST.opts.vo)bc({t:"say",text:spk||t});up()}return speak(spk||t)}
 const howTo=()=>"Welcome to the Feed My Sheep Challenge. You will answer fifty questions on the Bible, academics, investigations, morals and ethics, security, safety and I C T. Each question gives you "+S.chal.secs+" seconds. Choose one answer. Once you choose, you cannot go back. If time runs out, the question is marked wrong. Your results will appear automatically at the end. Do not leave the app during the challenge. If you do, your attempt ends and you cannot re-enter. Play honestly, and may God bless you.";
 function sayHow(){unlockVoice();if(HOST&&cv=="host")say(howTo());else speak(howTo())}
-async function announceSponsors(){unlockVoice();const sp=S.sponsors;if(!sp.length){toast("Add sponsor names first.");return}if(HOST&&HOST.b2)return;if(HOST)HOST.b2=true;
+async function announceSponsors(){unlockVoice();const sp=S.sponsors;if(!sp.length){alert("Add sponsor names first.");return}if(HOST&&HOST.b2)return;if(HOST)HOST.b2=true;
 await say("In conjunction with "+S.chal.partner+", this challenge is proudly sponsored by:","This challenge is held in conjunction with "+spell(S.chal.partner)+", and is proudly sponsored by:");
 for(let i=0;i<sp.length;i++){if(HOST){HOST.hl=i;up()}await say(sp[i])}
 if(HOST)HOST.hl=-1;await say("Thank you to all our sponsors for your generous support.");if(HOST){HOST.b2=false;up()}}
-function saveSpons(){S.chal.partner=$("sp_p").value.trim()||"FSCS";S.sponsors=$("sp_l").value.split("\n").map(x=>x.trim()).filter(Boolean);save();toast("Sponsors saved.")}
-function openHost(){if(typeof Peer=="undefined"){toast("Live hosting needs the internet. Connect and reload the app.");return}full();wake();
+function saveSpons(){S.chal.partner=$("sp_p").value.trim()||"FSCS";S.sponsors=$("sp_l").value.split("\n").map(x=>x.trim()).filter(Boolean);save();alert("Sponsors saved.")}
+function openHost(){if(typeof Peer=="undefined"){alert("Live hosting needs the internet. Connect and reload the app.");return}full();wake();
 if(HOST&&HOST.peer&&!HOST.peer.destroyed){cv="host";render();return}
 HOST={tlog:[],status:"Connecting…",players:{},started:false,qs:[],opts:{sp:true,vo:true},hl:-1,busy:false,b2:false,cap:"",round:0};
 const pr=new Peer("fmsc-"+S.chal.jh);HOST.peer=pr;
@@ -397,7 +336,7 @@ else if(m.t=="prog"){const p=HOST.players[c.__n];if(p){p.i=m.i;p.s=m.s;up()}}
 else if(m.t=="done"){const p=HOST.players[c.__n];if(p){p.done=true;p.s=m.s;p.sec=m.sec;p.by=m.by;S.results.push({name:c.__n,score:m.s,n:m.n||HOST.qs.length,sec:m.sec,at:new Date().toISOString().slice(0,16).replace("T"," ")});snap();board();up()}}
 else if(m.t=="tdone"){const p=HOST.players[c.__n],t=HOST.tbRun;if(p&&t&&t.names.includes(c.__n)){t.got[c.__n]=m.s;checkTb()}}
 else if(m.t=="left"){dq(c.__n)}}
-async function startComp(){if(!HOST||HOST.busy)return;if(!Object.values(HOST.players).some(p=>p.on&&!p.solo)){toast("No players have joined yet.");return}
+async function startComp(){if(!HOST||HOST.busy)return;if(!Object.values(HOST.players).some(p=>p.on&&!p.solo)){alert("No players have joined yet.");return}
 HOST.busy=true;up();unlockVoice();
 if(HOST.opts.sp&&S.sponsors.length)await announceSponsors();
 for(const n of ["3","2","1"])await say(n);
@@ -406,7 +345,7 @@ HOST.qs=buildQuiz();HOST.started=true;HOST.round++;HOST.tlog=[];HOST.left=[];HOS
 Object.values(HOST.players).filter(p=>!p.solo).forEach(p=>{p.in=!!p.on;p.s=0;p.i=0;p.done=false;p.sec=0;p.tb=[];p.by=null;p.dq=false});
 bc({t:"start",rid:HOST.rid,qs:HOST.qs,secs:S.chal.secs});save();HOST.busy=false;up()}
 function endRound(){if(!HOST)return;if(HOST.started)snap();HOST.started=false;Object.values(HOST.players).forEach(p=>{p.in=false});bc({t:"lobby"});up()}
-async function closeHost(){if(!await askC("Close the lobby?","Players will be disconnected.","Close lobby","Stay open",1))return;try{bc({t:"bye"});HOST.peer.destroy()}catch(e){}unwake();HOST=null;cv="admin";render()}
+function closeHost(){if(!confirm("Close the lobby? Players will be disconnected."))return;try{bc({t:"bye"});HOST.peer.destroy()}catch(e){}unwake();HOST=null;cv="admin";render()}
 function rHost(L){const h=HOST;if(!h){L.innerHTML=`<div class="card">Lobby closed.<br><button style="margin-top:8px" onclick="cv='admin';render()">Back to admin</button></div>`;return}
 const ps=Object.keys(h.players).map(n=>Object.assign({n},h.players[n])),on=ps.filter(p=>p.on&&!p.solo);
 const rows=h.started?ps.filter(p=>p.in&&!p.solo).sort(cmpP).map((p,i)=>`<div class="meta">${i+1}. <b>${esc(p.n)}</b> — ${p.s} pts · Q${p.i}/${h.qs.length}${(p.tb||[]).length?" · tie-break "+p.tb.join("+"):""}${p.dq?" ⛔ left the app (disqualified)":p.done?" ✅ finished":""}${p.on?"":" (offline)"}</div>`).join(""):on.map(p=>`<div class="meta">🟢 ${esc(p.n)}</div>`).join("");
@@ -425,17 +364,17 @@ ${h.started?`<button class="big" onclick="endRound()">⏹ End round (back to lob
 ${(h.started||S.last)?exportCard():""}<div class="row" style="flex-wrap:wrap"><button class="sec sm" onclick="cv='admin';render()">Back to admin</button><button class="sec sm" onclick="closeHost()">Close lobby</button></div>`}
 function sendHost(m){try{if(P.conn&&P.conn.open)P.conn.send(m)}catch(e){}}
 function joinLive(re,solo){const code=re?S.run.code:$("jc").value.trim(),name=re?S.run.name:$("cn").value.trim();
-if(!code||!name){toast("Enter the challenge code and your name.");return}
-if(typeof Peer=="undefined"){if(!re)toast("Live mode needs the internet. Connect and try again, or play alone.");return}
+if(!code||!name){alert("Enter the challenge code and your name.");return}
+if(typeof Peer=="undefined"){if(!re)alert("Live mode needs the internet. Connect and try again, or play alone.");return}
 unlockVoice();full();wake();try{if(P.peer)P.peer.destroy()}catch(e){}
 P.name=name;P.code=code;P.late=false;P.solo=!!solo;const pr=new Peer();P.peer=pr;
 pr.on("open",()=>{const c=pr.connect("fmsc-"+H("j"+code));P.conn=c;c.on("open",()=>c.send({t:"hello",name,code,rejoin:!!re,solo:!!solo}));c.on("data",onHost);c.on("close",()=>{P.conn=null;if(cv=="lobby"||cv=="wait"){cv="gate"}render()})});
-pr.on("error",e=>{if(!re)toast(e.type=="peer-unavailable"?"The host is not live yet. Check the code or wait for the host to open the lobby.":"Connection problem: "+e.type)})}
+pr.on("error",e=>{if(!re)alert(e.type=="peer-unavailable"?"The host is not live yet. Check the code or wait for the host to open the lobby.":"Connection problem: "+e.type)})}
 function onHost(m){
-if(m.t=="ok"){if(m.rid&&S.dqRid==m.rid){toast("You left this challenge and cannot re-enter.");leave();return}P.name=m.name;P.late=m.late;if(!S.run||S.run.done||!S.run.live){cv="lobby"}render()}
-else if(m.t=="no"){toast(m.why);try{P.peer.destroy()}catch(e){}P.conn=null}
+if(m.t=="ok"){if(m.rid&&S.dqRid==m.rid){alert("You left this challenge and cannot re-enter.");leave();return}P.name=m.name;P.late=m.late;if(!S.run||S.run.done||!S.run.live){cv="lobby"}render()}
+else if(m.t=="no"){alert(m.why);try{P.peer.destroy()}catch(e){}P.conn=null}
 else if(m.t=="wait"){cv="wait";render()}
-else if(m.t=="denied"){toast("The host did not approve your request to play alone.");leave()}
+else if(m.t=="denied"){alert("The host did not approve your request to play alone.");leave()}
 else if(m.t=="solo"){lock=false;S.run={name:P.name,qs:m.qs,i:0,ans:[],score:0,secs:m.secs,q0:Date.now(),t0:Date.now(),done:false,live:true,rid:m.rid,solo:true,code:P.code};save();render()}
 else if(m.t=="tie"){lock=false;S.run={name:P.name,qs:m.qs,i:0,ans:[],score:0,secs:m.secs,q0:Date.now(),t0:Date.now(),done:false,live:true,rid:m.rid,tie:true,code:P.code};save();render()}
 else if(m.t=="roster"){P.roster=m.n;if(cv=="lobby")render()}
@@ -472,7 +411,7 @@ await say("We have a tie for "+place+" place between "+g.names.join(", ")+". A s
 g.names.forEach(n=>{const p=HOST.players[n];if(p.on&&p.conn&&p.conn.open)p.conn.send({t:"tie",rid:HOST.rid,qs,secs:tsec});else HOST.tbRun.got[n]=0});checkTb()}
 function checkTb(){const t=HOST&&HOST.tbRun;if(!t||t.names.some(n=>t.got[n]===undefined)){up();return}
 t.names.forEach(n=>{const p=HOST.players[n];(p.tb=p.tb||[]).push(t.got[n])});HOST.tlog.push({place:t.place,names:t.names.slice(),scores:Object.assign({},t.got)});HOST.tbRun=null;snap();board();say("The tie-breaker is complete.");up()}
-async function announceWinners(){unlockVoice();const d=HOST&&HOST.started?snap():S.last;if(!d||!d.rows.length){toast("No results yet.");return}
+async function announceWinners(){unlockVoice();const d=HOST&&HOST.started?snap():S.last;if(!d||!d.rows.length){alert("No results yet.");return}
 await say("And now, the winners of the Feed My Sheep Challenge.");
 for(const r of d.rows.filter(r=>r.rank<=3).sort((a,b)=>b.rank-a.rank))await say(ord(r.rank)+" place: "+r.n+", with "+r.s+" points.");
 await say("Congratulations to everyone who took part.")}
@@ -537,14 +476,131 @@ L.push({skip:26},{t:"______________________________",s:11,x:40},{t:"Host / Admin
 function repText(d){const m=["🥇","🥈","🥉"];let t="🏆 *FEED MY SHEEP CHALLENGE*\nResults – "+d.at+"\n\n";d.rows.filter(r=>!r.dq).slice(0,10).forEach(r=>{t+=(r.rank<=3?m[r.rank-1]:r.rank+".")+" "+r.n+" – "+r.s+"/"+d.n+((r.tb||[]).length?" (tie-break "+r.tb.join("/")+")":"")+"\n"});
 return t+"\nThank you to "+d.partner+(d.spons.length?" and our sponsors: "+d.spons.join(", "):"")+". God bless you all! 🙏"}
 function dl(b,name){const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{a.remove();URL.revokeObjectURL(a.href)},2000)}
-async function shr(b,name,text){try{const f=new File([b],name,{type:b.type});if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:name,text});return}}catch(e){if(e&&e.name=="AbortError")return}dl(b,name);toast("This device can’t share files directly, so the file was downloaded. Attach it in WhatsApp.")}
+async function shr(b,name,text){try{const f=new File([b],name,{type:b.type});if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:name,text});return}}catch(e){if(e&&e.name=="AbortError")return}dl(b,name);alert("This device can’t share files directly, so the file was downloaded. Attach it in WhatsApp.")}
 function exp(kind,mode){if(HOST&&HOST.started)snap();const d=S.last;let b,name;const day=new Date().toISOString().slice(0,10);
-if(kind=="xlsx"){const s=sheets(d);if(!s.length){toast("No results yet.");return}b=mkXlsx(s);name="FeedMySheep-Results-"+day+".xlsx"}
-else if(kind=="pdf"){if(!(d&&d.rows.length)&&!S.results.length){toast("No results yet.");return}b=mkPdf(resLines(d));name="FeedMySheep-Results-"+day+".pdf"}
-else{if(!(d&&d.rows.length)){toast("Run a challenge first.");return}b=mkPdf(repLines(d));name="FeedMySheep-Report-"+day+".pdf"}
+if(kind=="xlsx"){const s=sheets(d);if(!s.length){alert("No results yet.");return}b=mkXlsx(s);name="FeedMySheep-Results-"+day+".xlsx"}
+else if(kind=="pdf"){if(!(d&&d.rows.length)&&!S.results.length){alert("No results yet.");return}b=mkPdf(resLines(d));name="FeedMySheep-Results-"+day+".pdf"}
+else{if(!(d&&d.rows.length)){alert("Run a challenge first.");return}b=mkPdf(repLines(d));name="FeedMySheep-Report-"+day+".pdf"}
 mode=="share"?shr(b,name,"Feed My Sheep Challenge"):dl(b,name)}
-function waText(){if(HOST&&HOST.started)snap();const d=S.last;if(!(d&&d.rows.length)){toast("No results yet.");return}open("https://wa.me/?text="+encodeURIComponent(repText(d)),"_blank")}
-const exportCard=()=>`<div class="card">${hhead("📤 Export &amp; share","Results (PDF or Excel) and the special challenge report. Share opens WhatsApp or your phone’s share sheet; if files can’t be shared, they download instead.")}<div class="row" style="flex-wrap:wrap;margin-top:8px"><button class="sm" onclick="exp('pdf','share')">Share PDF</button><button class="sm" onclick="exp('xlsx','share')">Share Excel</button><button class="sm" onclick="exp('rep','share')">Share report</button><button class="sec sm" onclick="exp('pdf')">Download PDF</button><button class="sec sm" onclick="exp('xlsx')">Download Excel</button><button class="sec sm" onclick="exp('rep')">Download report</button><button class="sec sm" onclick="waText()">WhatsApp text</button></div></div>`;
+function waText(){if(HOST&&HOST.started)snap();const d=S.last;if(!(d&&d.rows.length)){alert("No results yet.");return}open("https://wa.me/?text="+encodeURIComponent(repText(d)),"_blank")}
+const exportCard=()=>`<div class="card"><h3>📤 Export &amp; share</h3><div class="meta">Results (PDF or Excel) and the special challenge report. Share opens WhatsApp or your phone’s share sheet; if files can’t be shared, they download instead.</div><div class="row" style="flex-wrap:wrap;margin-top:8px"><button class="sm" onclick="exp('pdf','share')">Share PDF</button><button class="sm" onclick="exp('xlsx','share')">Share Excel</button><button class="sm" onclick="exp('rep','share')">Share report</button><button class="sec sm" onclick="exp('pdf')">Download PDF</button><button class="sec sm" onclick="exp('xlsx')">Download Excel</button><button class="sec sm" onclick="exp('rep')">Download report</button><button class="sec sm" onclick="waText()">WhatsApp text</button></div></div>`;
 
 let WL=null;
-async function wake(){try{if(navigator.wakeLock&&!WL){WL=await navigator.wakeLock.request(
+async function wake(){try{if(navigator.wakeLock&&!WL){WL=await navigator.wakeLock.request("screen");WL.addEventListener("release",()=>{WL=null})}}catch(e){}}
+function unwake(){try{if(WL)WL.release()}catch(e){}WL=null}
+function full(){try{const e=document.documentElement,f=e.requestFullscreen||e.webkitRequestFullscreen;if(f&&!document.fullscreenElement){const r=f.call(e);if(r&&r.catch)r.catch(()=>{})}}catch(e){}}
+function dq(n){const p=HOST&&HOST.players[n];if(!p||p.dq)return;p.dq=true;p.done=true;(HOST.left=HOST.left||[]).push(n);const t=HOST.tbRun;if(t&&t.names.includes(n)&&t.got[n]===undefined)t.got[n]=0;snap();board();up();if(t)checkTb()}
+function leftNow(){const r=S.run;if(!r||!r.live||r.done)return;r.left=true;r.done=true;r.end=Date.now();clearInterval(TI);sendHost({t:"left"});S.dqRid=r.rid;save();try{if(P.peer){const pr=P.peer;setTimeout(()=>{try{pr.destroy()}catch(e){}},400)}}catch(e){}}
+if(document.addEventListener){
+document.addEventListener("visibilitychange",()=>{if(document.hidden)leftNow();else{if(S.run||HOST||P.conn)wake();if(S.run&&S.run.left){tab="chal";render()}}});
+["contextmenu","copy","cut","selectstart","dragstart"].forEach(ev=>document.addEventListener(ev,e=>{const t=e.target&&(e.target.nodeType==3?e.target.parentElement:e.target);if(t&&t.closest&&t.closest(".nocopy"))e.preventDefault()}))}
+if(typeof addEventListener=="function")addEventListener("pagehide",leftNow);
+
+const AI_DEFAULT_URL="";
+let AIB=false;
+const aiUrl=()=>S.ai.url||AI_DEFAULT_URL;
+const aiConv=()=>S.ai.convs.find(x=>x.id==S.ai.cur);
+function aiNew(){const c={id:Date.now().toString(36),title:"New chat",msgs:[],at:Date.now()};S.ai.convs.unshift(c);S.ai.cur=c.id;save();render()}
+function md(t){let s=esc(t);s=s.replace(/```([\s\S]*?)```/g,(_,c)=>`<pre style="overflow-x:auto;background:var(--bg);padding:8px;border-radius:8px">${c.replace(/^[a-z]*\n/,"")}</pre>`);return s.replace(/`([^`\n]+)`/g,"<code>$1</code>").replace(/\*\*([^*\n]+)\*\*/g,"<b>$1</b>").replace(/^[-*] /gm,"• ").replace(/\n/g,"<br>")}
+const aiBub=(m,i)=>m.r=="u"?`<div style="text-align:right;margin:8px 0"><span style="display:inline-block;background:var(--acc);color:var(--bg);border-radius:14px;padding:8px 12px;max-width:90%;text-align:left;white-space:pre-wrap">${esc(m.t)}</span></div>`:`<div style="margin:8px 0"><div style="background:var(--acc2);border-radius:14px;padding:8px 12px;max-width:95%">${md(m.t)}</div>${m.err?"":`<button class="sec sm" style="margin-top:4px" onclick="aiCopy(${i})">Copy</button>`}</div>`;
+function rAI(L){if(!aiUrl()&&!S.ai.key){L.innerHTML=`<div class="card"><h3>🤖 Assistant</h3><div class="meta">Not connected yet. Paste your Gemini API key in Settings (it stays only on this device), or add a proxy link.</div><button style="margin-top:10px" onclick="aiSet()">Set up</button></div>`;return}
+const c=aiConv();if(!c){aiNew();return}
+L.innerHTML=`<div class="row" style="flex-wrap:wrap;margin-bottom:8px"><button class="sm" onclick="aiNew()">＋ New chat</button><button class="sec sm" onclick="aiHist()">History</button><button class="sec sm" onclick="aiSet()">Settings</button></div><div class="card"><div class="meta" style="margin-bottom:4px">${esc(c.title)}</div>${c.msgs.length?c.msgs.map(aiBub).join(""):`<div class="empty">Ask me anything: study, business, science, health education, history, writing, translation, coding, the Bible and more.</div>`}${AIB?`<div class="meta">⏳ Thinking…</div>`:""}</div><div class="row" style="align-items:flex-end"><textarea id="aiq" rows="2" placeholder="Type your question…" style="flex:1"></textarea><button onclick="aiSend()" ${AIB?"disabled":""}>Send</button></div>`;
+if(typeof window!="undefined"&&window.scrollTo)window.scrollTo(0,document.body.scrollHeight)}
+async function aiCall(body){if(S.ai.key)return aiDirect(body);body.code=S.ai.code;const r=await fetch(aiUrl(),{method:"POST",body:JSON.stringify(body)});return r.json()}
+const aiErr=j=>j.error=="code"?"This assistant needs an access code. Open Settings and enter it.":j.error=="limit"?"The assistant’s daily limit has been reached. Please try again tomorrow.":j.message||"Something went wrong.";
+async function aiSend(){if(AIB)return;const q=$("aiq").value.trim();if(!q)return;const c=aiConv();c.msgs.push({r:"u",t:q});if(c.title=="New chat")c.title=q.slice(0,40);c.at=Date.now();AIB=true;save();render();
+try{const j=await aiCall({action:"chat",messages:c.msgs.filter(m=>!m.err).slice(-20),search:S.ai.search});if(j.text)c.msgs.push({r:"m",t:j.text,model:j.model});else c.msgs.push({r:"m",t:"⚠️ "+aiErr(j),err:1})}
+catch(e){c.msgs.push({r:"m",t:"⚠️ Could not reach the assistant. Check your internet connection and the proxy link in Settings.",err:1})}
+AIB=false;save();render()}
+function aiCopy(i){cpy(aiConv().msgs[i].t)}
+function aiHist(){open_(`<h2 style="margin:0;color:var(--acc)">Chat history</h2>${S.ai.convs.map(c=>`<div class="card" style="margin-top:8px"><b>${esc(c.title)}</b><div class="meta">${c.msgs.length} messages · ${new Date(c.at).toLocaleDateString()}</div><div class="row" style="margin-top:6px"><button class="sm" onclick="S.ai.cur='${c.id}';save();close_();render()">Open</button><button class="sec sm" onclick="aiDel('${c.id}')">Delete</button></div></div>`).join("")||`<div class="empty">No chats yet.</div>`}<button class="sec" style="width:100%;margin-top:12px" onclick="close_()">Close</button>`)}
+function aiDel(id){if(!confirm("Delete this chat?"))return;S.ai.convs=S.ai.convs.filter(c=>c.id!=id);if(S.ai.cur==id)S.ai.cur=S.ai.convs[0]?S.ai.convs[0].id:"";save();close_();render()}
+function aiSet(){open_(`<h2 style="margin:0;color:var(--acc)">Assistant settings</h2><label>Gemini API key (stored only on this device, never uploaded)</label><input id="ai_k" type="password" value="${esc(S.ai.key||"")}" placeholder="Paste your key to use Gemini directly"><div class="meta">With a key here, the assistant talks to Gemini directly and no proxy is needed.</div><label>Proxy link (optional, Google Apps Script web app)</label><input id="ai_u" value="${esc(S.ai.url)}" placeholder="https://script.google.com/macros/s/…/exec"><label>Access code (if the admin set one)</label><input id="ai_c" value="${esc(S.ai.code)}"><label><input type="checkbox" id="ai_s" ${S.ai.search?"checked":""}>Use Google Search for current affairs</label><div class="meta" id="ai_st" style="margin:8px 0"></div><div class="card" style="margin:10px 0"><h3>🧪 Models</h3><div class="meta" id="ai_cur"></div><div class="row" style="flex-wrap:wrap;margin:8px 0"><button class="sec sm" onclick="aiLoad()">Load models</button><button class="sec sm" onclick="aiRecheck().then(aiCur)">Auto-select best</button></div><select id="ai_m"><option value="">Load models first</option></select><label>Test question</label><input id="ai_mp" value="Explain photosynthesis in one sentence."><div class="row" style="flex-wrap:wrap;margin-top:8px"><button class="sm" onclick="aiMTest()">Test selected</button><button class="sm" onclick="aiMUse()">Use selected</button></div><div class="meta" id="ai_mt" style="margin-top:8px;white-space:pre-wrap"></div></div><div class="row" style="flex-wrap:wrap"><button class="sm" onclick="aiSave()">Save</button><button class="sec sm" onclick="aiTest()">Test connection</button><button class="sec sm" onclick="aiRecheck()">Admin: re-check models</button><button class="sec sm" onclick="close_()">Close</button></div>`)}
+function aiSave(){S.ai.key=$("ai_k").value.trim();S.ai.url=$("ai_u").value.trim();S.ai.code=$("ai_c").value.trim();S.ai.search=$("ai_s").checked;save();$("ai_st").textContent="Saved.";render()}
+async function aiTest(){aiSave();$("ai_st").textContent="Testing…";try{const j=await aiCall({action:"status"});$("ai_st").textContent=j.ok?(j.hasKey?"✅ Connected. "+(j.model?"Saved model: "+j.model:"No model saved yet; the first question will select one."):"⚠️ Proxy reached, but the Gemini API key is not set in its Script Properties."):"⚠️ "+aiErr(j)}catch(e){$("ai_st").textContent="⚠️ Could not reach the proxy link."}}
+async function aiRecheck(){aiCur();const k=S.ai.key?"local":prompt("Admin key (from the proxy's ADMIN_KEY property)");if(!k)return;$("ai_st").textContent="Testing models with real requests…";try{const j=await aiCall({action:"select",adminKey:k});$("ai_st").textContent=j.ok?"✅ Selected and saved: "+j.model+" (tested "+j.tested.map(t=>t.model+" "+t.code).join(", ")+")":"⚠️ "+aiErr(j)}catch(e){$("ai_st").textContent="⚠️ Could not reach the proxy link."}}
+
+const GEMB="https://generativelanguage.googleapis.com/v1beta/";
+const AI_SYS="You are a helpful, honest, general-purpose AI assistant inside the Feed My Sheep app. Answer questions on any legitimate subject, including general knowledge, education, business, finance, science, technology, mathematics, health education, history, current affairs, Bible studies, writing, translation, programming and everyday problem-solving. Be clear, accurate and kind, and reply in the language the user writes in. For health, legal and financial topics give useful general information and say when a qualified professional should be consulted. If you are unsure, say so instead of guessing. Never refuse a legitimate question just because it is not about Christianity.";
+async function gmf(path,payload){const h={"x-goog-api-key":S.ai.key};if(payload)h["Content-Type"]="application/json";const r=await fetch(GEMB+path,{method:payload?"POST":"GET",headers:h,body:payload?JSON.stringify(payload):undefined});let j={};try{j=await r.json()}catch(e){}return{code:r.status,json:j}}
+const gmText=j=>{const c=j.candidates&&j.candidates[0];return c&&c.content&&c.content.parts?c.content.parts.map(p=>p.text||"").join(""):""};
+function gmScore(n){const m=n.match(/^gemini-(\d+(?:\.\d+)?)-(flash-lite|flash|pro)/);if(!m)return-1;let s={"flash":300,"flash-lite":200,"pro":100}[m[2]]+parseFloat(m[1])*10;if(/preview|exp|thinking/.test(n))s-=15;return s}
+const gmKeyBad=r=>r.code==401||r.code==403||(r.code==400&&/api key/i.test((r.json.error&&r.json.error.message)||""));
+async function gmPick(){const l=await gmf("models?pageSize=200");
+if(l.code!=200)return{error:l.code==429?"quota":gmKeyBad(l)?"key":"gemini",message:gmKeyBad(l)?"Gemini rejected the API key. Check that it is correct.":(l.json.error&&l.json.error.message)||"Could not list models (HTTP "+l.code+")."};
+const c=(l.json.models||[]).filter(m=>(m.supportedGenerationMethods||[]).includes("generateContent")).map(m=>m.name.replace(/^models\//,"")).filter(n=>gmScore(n)>0&&!/(image|tts|audio|live|embedding)/.test(n)).sort((a,b)=>gmScore(b)-gmScore(a)).slice(0,8);
+const tested=[],ok=[];
+for(const m of c){const r=await gmf("models/"+m+":generateContent",{contents:[{role:"user",parts:[{text:"Reply with the single word OK."}]}],generationConfig:{maxOutputTokens:128}});tested.push({model:m,code:r.code});if(r.code==200&&r.json.candidates){ok.push(m);if(ok.length>=3)break}}
+if(!ok.length)return{error:"no_model",message:"No Gemini model answered a test request. The key may be invalid, or the free quota may be used up.",tested};
+S.ai.model=ok[0];S.ai.cands=ok;S.ai.manual=false;save();return{ok:true,model:ok[0],cands:ok,tested}}
+async function aiDirect(b,retried){
+if(b.action=="status")return{ok:true,hasKey:true,model:S.ai.model||null,manual:!!S.ai.manual};
+if(b.action=="models")return gmModels();
+if(b.action=="test")return gmTest(String(b.model||""),b.prompt);
+if(b.action=="setmodel"){S.ai.model=String(b.model||"");S.ai.cands=[S.ai.model].concat((S.ai.cands||[]).filter(x=>x!=S.ai.model)).slice(0,3);S.ai.manual=true;save();return{ok:true,model:S.ai.model}}
+if(b.action=="select")return gmPick();
+const msgs=[];(b.messages||[]).slice(-20).forEach(m=>{const role=m.r=="m"?"model":"user",t=String(m.t||"").slice(0,6000);if(!t)return;const l=msgs[msgs.length-1];if(l&&l.role==role)l.parts[0].text+="\n\n"+t;else msgs.push({role,parts:[{text:t}]})});
+while(msgs.length&&msgs[0].role!="user")msgs.shift();
+if(!msgs.length||msgs[msgs.length-1].role!="user")return{error:"bad_request",message:"Nothing to answer."};
+let model=S.ai.model,cands=S.ai.cands||[];
+if(!model){const s=await gmPick();if(s.error)return s;model=s.model;cands=s.cands}
+const order=[model].concat(cands.filter(x=>x!=model)).slice(0,3);let last={code:0,json:{}};
+for(const m of order){const body={systemInstruction:{parts:[{text:AI_SYS}]},contents:msgs,generationConfig:{temperature:.7,maxOutputTokens:4096}};
+let r=b.search?await gmf("models/"+m+":generateContent",Object.assign({},body,{tools:[{google_search:{}}]})):null;if(!r||r.code==400)r=await gmf("models/"+m+":generateContent",body);
+if(r.code==200){const t=gmText(r.json),br=r.json.promptFeedback&&r.json.promptFeedback.blockReason;return{ok:true,model:m,text:t||(br?"I can’t help with that request.":"No answer was returned. Please rephrase and try again.")}}
+last=r;if([404,429,500,503].indexOf(r.code)<0)break}
+if(last.code==404&&!retried){S.ai.model="";const s=await gmPick();if(!s.error)return aiDirect(b,true)}
+if(last.code==429)return{error:"quota",message:"The free Gemini limit has been reached for now. Please try again in a few minutes."};
+if(gmKeyBad(last))return{error:"key",message:"Gemini rejected the API key or its permissions. Check the key in Settings."};
+return{error:"gemini",message:(last.json.error&&last.json.error.message)||"Gemini returned HTTP "+last.code+"."}}
+
+async function gmModels(){const l=await gmf("models?pageSize=200");if(l.code!=200)return{error:l.code==429?"quota":gmKeyBad(l)?"key":"gemini",message:gmKeyBad(l)?"Gemini rejected the API key. Check that it is correct.":(l.json.error&&l.json.error.message)||"Could not list models (HTTP "+l.code+")."};
+return{ok:true,models:(l.json.models||[]).filter(m=>(m.supportedGenerationMethods||[]).includes("generateContent")).map(m=>m.name.replace(/^models\//,"")).filter(n=>/^gemini-/.test(n)&&!/(embedding|tts|image|audio|live)/.test(n)).sort((a,b)=>gmScore(b)-gmScore(a))}}
+async function gmTest(m,pr){const t0=Date.now(),r=await gmf("models/"+m+":generateContent",{contents:[{role:"user",parts:[{text:String(pr||"Reply with the single word OK.").slice(0,500)}]}],generationConfig:{maxOutputTokens:256}}),ms=Date.now()-t0;
+if(r.code==200)return{ok:true,model:m,ms,text:gmText(r.json)};
+return{error:r.code==429?"quota":gmKeyBad(r)?"key":"gemini",code:r.code,ms,message:r.code==429?"This model’s free limit is reached.":gmKeyBad(r)?"Gemini rejected the API key.":(r.json.error&&r.json.error.message)||"HTTP "+r.code}}
+function aiCur(){const e=$("ai_cur");if(e)e.textContent=S.ai.key?"Using: "+(S.ai.model||"not chosen yet")+(S.ai.manual?" (chosen by you)":" (auto)"):"Proxy mode: tap Test connection to see the saved model."}
+async function aiLoad(){$("ai_mt").textContent="Loading models…";aiSave();aiCur();try{const j=await aiCall({action:"models"});if(!j.ok){$("ai_mt").textContent="⚠️ "+aiErr(j);return}
+$("ai_m").innerHTML=j.models.map((m,i)=>`<option value="${esc(m)}" ${m==S.ai.model?"selected":""}>${esc(m)}${i==0?" ★":""}</option>`).join("");$("ai_mt").textContent=j.models.length+" models available to your key. ★ = suggested for the free tier."}catch(e){$("ai_mt").textContent="⚠️ Could not connect."}}
+async function aiMTest(){const m=$("ai_m").value;if(!m){$("ai_mt").textContent="Load models and pick one first.";return}$("ai_mt").textContent="Testing "+m+"…";
+try{const j=await aiCall({action:"test",model:m,prompt:$("ai_mp").value.trim()});$("ai_mt").textContent=j.ok?"✅ "+m+" answered in "+(j.ms/1000).toFixed(1)+" s:\n"+(j.text||"(empty reply)").slice(0,400):"⚠️ "+m+": "+aiErr(j)+(j.code?" (HTTP "+j.code+")":"")}catch(e){$("ai_mt").textContent="⚠️ Could not connect."}}
+async function aiMUse(){const m=$("ai_m").value;if(!m){$("ai_mt").textContent="Load models and pick one first.";return}const k=S.ai.key?"local":prompt("Admin key (from the proxy’s ADMIN_KEY property)");if(!k)return;
+try{const j=await aiCall({action:"setmodel",model:m,adminKey:k});$("ai_mt").textContent=j.ok?"✅ Now using "+j.model+" for all answers.":"⚠️ "+aiErr(j);aiCur()}catch(e){$("ai_mt").textContent="⚠️ Could not connect."}}
+
+const BQ="https://parishprieststores-byte.github.io/Brainquest/";
+function rBQ(L){L.innerHTML=`<div class="card" style="text-align:center"><div style="font-size:52px">🧠</div><h2 style="margin:4px 0 10px;color:var(--acc)">BrainQuest – Learn, Think and Grow! 🧠</h2><div style="text-align:left;margin-bottom:14px">BrainQuest is an interactive educational platform designed to stimulate the mind, strengthen reasoning, improve general knowledge and make learning engaging through questions, challenges and knowledge-based activities. It encourages curiosity, critical thinking and continuous intellectual development.</div>
+<a href="${BQ}" target="_blank" rel="noopener noreferrer" style="display:block;font-size:20px;font-weight:bold;color:var(--acc);margin:6px 0 10px">🧠 Explore BrainQuest – Tap Here 👇</a>
+<a href="${BQ}" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none;text-align:center;background:var(--acc);color:var(--bg);border-radius:12px;padding:16px;font-size:20px;font-weight:bold">🧠 Open BrainQuest</a>
+<div class="meta" style="margin-top:14px">Link</div><code style="word-break:break-all">${BQ}</code><div style="margin-top:8px"><button class="sec sm" onclick="cpy('${BQ}')">Copy link</button></div>
+<div class="meta" style="margin-top:12px">BrainQuest opens in your browser. Use the back button to return to Feed My Sheep. It needs an internet connection.</div></div>`}
+function saveMax(){const v=Math.min(200,Math.max(1,Math.round(+$("as_max").value)||30));S.chal.max=v;if(HOST)HOST.fullSaid=false;save();render();alert("Limit saved: "+v+" participants.")}
+function quickGA(){form({date:`${year}-${String(month+1).padStart(2,"0")}-01`,status:"Planned",title:"Gathering of Angels",ministry:"Gathering of Angels"})}
+function form(x){const sm=tab=="sermons",st=sm?SS:MS;x=x||{date:`${year}-${String(month+1).padStart(2,"0")}-01`,status:st[0]};
+const f=(k,l,t="text")=>`<label>${l}</label><input id="f_${k}" type="${t}" value="${esc(x[k])}">`;
+open_(`<h2 style="margin:0;color:var(--acc)">${x.id?"Edit":"New"} ${sm?"sermon":tab=="special"?"special service":"activity"}</h2>${f("title",sm?"Sermon title":"Activity name")}${f("date","Date","date")}${f("time","Time","time")}
+${sm?f("scripture","Scripture (e.g. John 21:15-17)")+f("series","Series")+f("speaker","Preacher"):`<label>${tab=="special"?"Occasion":"Ministry"}</label><select id="f_ministry">${(tab=="special"?OCC:MIN).map(m=>`<option ${x.ministry==m?"selected":""}>${m}</option>`).join("")}</select>${f("location","Location")}${tab=="special"?f("speaker","Preacher / host"):""}`}
+<label>Status</label><select id="f_status">${st.map(s=>`<option ${x.status==s?"selected":""}>${s}</option>`).join("")}</select>
+<label>${sm?"Outline / notes":"Notes / people involved"}</label><textarea id="f_notes" rows="5">${esc(x.notes)}</textarea>
+<div class="row" style="margin-top:14px"><button class="sec" onclick="close_()" style="flex:1">Cancel</button><button style="flex:1" onclick="saveF('${x.id||""}')">Save</button></div>`)}
+function saveF(id){const g=k=>{const e=$("f_"+k);return e?e.value.trim():undefined};
+const o={title:g("title"),date:g("date"),time:g("time"),scripture:g("scripture"),series:g("series"),speaker:g("speaker"),ministry:g("ministry"),location:g("location"),status:g("status"),notes:g("notes")};
+if(!o.title){$("f_title").focus();return}
+const A=arr();
+if(id){Object.assign(A.find(x=>x.id==id),o)}else{o.id=Date.now().toString(36);A.push(o)}
+if(o.date){year=yOf(o.date);month=mOf(o.date)}save();close_();render()}
+function find(id){return arr().find(x=>x.id==id)}
+function edit(id){form(find(id))}
+function adv(id){const x=find(id),st=tab=="sermons"?SS:MS,i=st.indexOf(x.status);x.status=i==st.length-1?st[0]:st[i+1];save();render()}
+function del(id){if(!confirm("Delete this item?"))return;const k=tab=="sermons"?"sermons":tab=="acts"?"acts":"special";S[k]=S[k].filter(x=>x.id!=id);save();render()}
+function restore(){try{const d=JSON.parse($("bk").value);if(d.sermons&&d.acts){const kk=S.ai&&S.ai.key;S=d;S.special=S.special||[];S.people=S.people||[];S.cfg=S.cfg||{church:"",cc:"234"};norm();if(kk)S.ai.key=kk;save();render();alert("Restored.")}else throw 0}catch(e){alert("That backup text isn’t valid.")}}
+$("add").onclick=()=>tab=="people"?pform():form();$("q").oninput=render;
+$("yr").onchange=e=>{year=+e.target.value;render()};
+const hm=/^#ch([0-9]+)$/.exec(location.hash);if(hm){S.chal.secs=Math.min(300,Math.max(5,+hm[1]));save()}
+if(S.run&&!S.run.done){const r=S.run;if(r.live){r.left=true;r.done=true;r.end=Date.now();S.dqRid=r.rid;save()}else{r.ans.push(-1);r.i++;if(r.i>=r.qs.length)fin(r);else r.q0=Date.now();save()}}
+if(S.run)tab="chal";
+addEventListener("load",()=>{if(S.run&&S.run.live&&!S.run.solo&&!S.run.done)joinLive(true)});
+render();
+try{if(navigator.serviceWorker)navigator.serviceWorker.addEventListener("controllerchange",()=>{if(!sessionStorage.getItem("fmsr")){sessionStorage.setItem("fmsr","1");location.reload()}})}catch(e){}
+if("serviceWorker" in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+</script></body></html>
