@@ -72,6 +72,7 @@ details.card summary{cursor:pointer;font:700 17px Georgia,serif;min-height:32px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 .track{height:10px;background:var(--acc2);border-radius:9px;overflow:hidden}.fill{height:100%;background:var(--acc);transition:width .2s}
 .hl{background:var(--acc);color:var(--bg)}
+.lnk{font:inherit;font-weight:600;min-height:46px;padding:10px 18px;border-radius:12px;background:var(--acc);color:var(--bg);display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;text-align:center}.lnk:active{transform:scale(.97)}
 .warn{display:flex;gap:8px;align-items:flex-start;margin:12px 0;padding:10px 12px;border-radius:12px;background:var(--acc2);font-size:14px}.warn .ic{flex:none;margin-top:2px}
 </style></head><body>
 <a class="skip" href="#list">Skip to content</a>
@@ -88,12 +89,13 @@ details.card summary{cursor:pointer;font:700 17px Georgia,serif;min-height:32px}
 <div class="modal center" id="dlgm" role="alertdialog" aria-modal="true" aria-hidden="true"><div class="sheet" tabindex="-1"></div></div>
 <div id="toasts" aria-live="polite"></div>
 <script>
-/* PROJECT NOTE (Feed My Sheep v2.1)
+/* PROJECT NOTE (Feed My Sheep v2.2)
  Architecture: single-file PWA (index.html + sw.js + manifest + icons); data in localStorage "fms"; theme choice in "fms-theme"; live challenge via PeerJS (CDN, runtime only).
  Decisions: bottom navigation (Plan, People, Challenge, Assistant, More) + section pills; custom dialogs/toasts replace alert/confirm/prompt;
    History API layers so system back closes dialogs and steps through screens (blocked during a live challenge); hand-built SVG icon family (IC / ic()),
    source text uses tokens like U+27E6 name U+27E7 which iconify() turns into SVG; WhatsApp message text keeps its emojis by design.
  Known issues: PeerJS not precached (live mode needs internet); real-device behaviour (voice, wake lock, share sheet, install, cross-device play) not tested here.
+ v2.2 adds the church WhatsApp group card (Connect and More): constant WAG, opens in WhatsApp, copy-link fallback.
  Outstanding: none planned. */
 const M=["January","February","March","April","May","June","July","August","September","October","November","December"];
 const MIN=["Worship","Prayer","Youth","Children","Women","Men","Outreach","Counseling","Visitation","Choir/Music","Bible Study","Other"];
@@ -222,7 +224,12 @@ const GROUPS=[{id:"plan",label:"Plan",icon:"calendar",leaves:[["sermons","Sermon
 const grpOf=k=>GROUPS.find(g=>g.leaves.some(l=>l[0]==k)),lastLeaf={};
 function navTo(k){tab=k;render();window.scrollTo(0,0)}
 function goGroup(id){const g=GROUPS.find(x=>x.id==id);navTo(lastLeaf[id]||g.leaves[0][0])}
-function rMore(L){const v=TH.get();L.innerHTML=`<div class="card">${hhead("Appearance","Auto follows your phone’s light or dark setting. Your choice is remembered on this device.")}<div class="seg2" role="group" aria-label="Theme">${[["auto","Auto","menu"],["light","Light","sun"],["dark","Dark","moon"]].map(([k,l,i])=>`<button type="button" class="${v==k?"on":""}" aria-pressed="${v==k}" onclick="TH.set('${k}');render()">${ic(i)}${l}</button>`).join("")}</div></div>
+const WAG="https://chat.whatsapp.com/DCN7tnt1a9RGy4fxkskiml?s=cl&p=a&iam=2";
+function waOpen(e){if(!navigator.onLine){e.preventDefault();note("You need an internet connection to open WhatsApp.","err")}}
+async function waCopy(){let ok=false;try{await navigator.clipboard.writeText(WAG);ok=true}catch(e){try{const x=document.createElement("textarea");x.value=WAG;x.setAttribute("readonly","");x.style.cssText="position:fixed;opacity:0";document.body.appendChild(x);x.select();ok=document.execCommand("copy");x.remove()}catch(e2){}}
+note(ok?"Group link copied.":"Could not copy the link. Press and hold it to copy.",ok?"ok":"err")}
+function waCard(){return `<div class="card">${hhead("\u27E6chat\u27E7 WhatsApp group","Opens WhatsApp so you can join or open the church group. You need an internet connection and WhatsApp installed on your phone.")}<div class="row" style="margin-top:10px"><a class="lnk" href="${WAG}" target="_blank" rel="noopener noreferrer" onclick="waOpen(event)">\u27E6chat\u27E7 Open WhatsApp group</a><button type="button" class="sec" onclick="waCopy()">\u27E6copy\u27E7 Copy invite link</button></div></div>`}
+function rMore(L){const v=TH.get();L.innerHTML=waCard()+`<div class="card">${hhead("Appearance","Auto follows your phone’s light or dark setting. Your choice is remembered on this device.")}<div class="seg2" role="group" aria-label="Theme">${[["auto","Auto","menu"],["light","Light","sun"],["dark","Dark","moon"]].map(([k,l,i])=>`<button type="button" class="${v==k?"on":""}" aria-pressed="${v==k}" onclick="TH.set('${k}');render()">${ic(i)}${l}</button>`).join("")}</div></div>
 <div class="card"><h3>BrainQuest</h3><div class="row" style="margin-top:8px"><button type="button" onclick="navTo('bq')">${ic("brain")} Open BrainQuest</button></div></div>
 <div class="card">${hhead("Backup and install","Copy or restore your data, and see how to install the app on your phone.")}<div class="row" style="margin-top:8px"><button type="button" class="sec" onclick="navTo('year')">${ic("save")} Open backup and install</button></div></div>`}
 
@@ -365,7 +372,7 @@ function gen(){C.text=TPL[C.tpl][1].split("{name}").join(C.name||"friend").split
 function cg(){gen();$("c_text").value=C.text}
 function cPick(id){const p=S.people.find(x=>x.id==id);C.pid=id;if(p){C.name=p.name;C.phone=p.phone||""}gen();render()}
 function rComm(L){if(!C.text)gen();
-L.innerHTML=`<div class="card"><h3>⟦chat⟧ Send a message</h3>
+L.innerHTML=waCard()+`<div class="card"><h3>⟦chat⟧ Send a message</h3>
 <label>Church name (used in messages)</label><input value="${esc(S.cfg.church)}" oninput="S.cfg.church=this.value;save();cg()">
 <label>Country code for WhatsApp (e.g. 234)</label><input value="${esc(S.cfg.cc)}" oninput="S.cfg.cc=this.value.replace(/[^0-9]/g,'');save()">
 <label>Person from your records</label><select onchange="cPick(this.value)"><option value="">Type manually</option>${S.people.map(p=>`<option value="${p.id}" ${C.pid==p.id?"selected":""}>${esc(p.name)}</option>`).join("")}</select>
